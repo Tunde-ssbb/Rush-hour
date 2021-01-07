@@ -9,5 +9,8 @@ class Car():
         self.x = x - 1
         self.y = y - 1
     
-    def move(self):
-        pass
+    def move(self,step):
+        if self.orientation == "H":
+            self.x = self.x + step
+        else:
+            self.y = self.y - step

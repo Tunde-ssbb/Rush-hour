@@ -40,8 +40,41 @@ class Board():
         pass
 
     def move(self, car, step):
-        pass
+        car_object = self.cars[car]
+        
+        x = car_object.x
+        y = car_object.y
+
+        # change the position in the car object
+        car_object.move(step)
+        
+        # change the position on the board
+        if car_object.orientation == "H":
+            # set the order of moving
+            range_of_i = self.range_for_move_order(step, car_object.length)
+            for i in range_of_i:
+                # swap character
+                self.board[y, x + i],self.board[y, x + step + i] = self.board[y, x + step + i], self.board[y, x + i]
+                
+        else:
+            # definition of direction
+            step = -step
+            
+            # set the order of moving
+            range_of_i = self.range_for_move_order(step, car_object.length)
+
+            for i in range_of_i:
+                # swap character
+                self.board[y + i, x],self.board[y + step + i, x] = self.board[y + step + i, x], self.board[y + i, x]
 
     def won(self):
         pass
+    
+    # util function used in move
+    def range_for_move_order(self, step, length):
+        if step < 0:
+            range_of_i = range(length)
+        else:
+            range_of_i = range(length - 1, -1, -1)
+        return range_of_i
 
