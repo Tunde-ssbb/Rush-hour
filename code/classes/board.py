@@ -67,4 +67,10 @@ class Board():
         pass
 
     def log_move(self, car_id, step):
-        self.moves.append((car_id, step))
+        self.moves.append([car_id, step])
+
+    def save_log(self):
+        with open('output.csv', 'w') as output_file:
+            csv_writer = csv.writer(output_file, delimiter=',')
+            csv_writer.writerow(['car', 'move'])
+            csv_writer.writerows(self.moves)
