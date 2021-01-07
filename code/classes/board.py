@@ -72,9 +72,9 @@ class Board():
 
     def save_log(self):
         # create output csv file
-        with open('output.csv', 'w') as output_file:
+        with open('data/logs/output.csv', 'w') as output_file:
             csv_writer = csv.writer(output_file, delimiter=',')
-            
+
             # write headers and moves in output file
             csv_writer.writerow(['car', 'move'])
             csv_writer.writerows(self.moves)
