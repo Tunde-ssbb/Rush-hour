@@ -24,7 +24,7 @@ class Board():
         pass
 
     def draw_board(self):
-        pass
+        return self.board
 
     def validate_move(self, car, step):
         pass
@@ -34,3 +34,4 @@ class Board():
 
     def won(self):
         pass
+
