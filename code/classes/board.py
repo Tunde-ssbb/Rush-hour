@@ -8,6 +8,7 @@ class Board():
     def __init__(self, size, csv):
         self.size = size
         self.cars = {}
+        self.moves = []
         self.load_cars(csv)
         self.board = np.full((size, size), "#")
         self.load_board()
@@ -37,7 +38,27 @@ class Board():
         return self.board
 
     def validate_move(self, car, step):
-        pass
+        car = self.cars[car]
+
+        # isolate board row/column
+        if car.orientation == "H":
+            board = self.board[car.y,:]
+            place = car.x
+        else:
+            board = self.board[:,car.x]
+            place = car.y
+
+        # isolate path of move
+        if step < 0:
+            path = board[place + step : place]
+        else:
+            path = board[place + car.length : (place + car.length + step)%board.size]
+
+        # check if path is free
+        if path.size:
+            return np.all(path == "#") 
+        return False
+
 
     def move(self, car, step):
         car_object = self.cars[car]
@@ -78,3 +99,15 @@ class Board():
             range_of_i = range(length - 1, -1, -1)
         return range_of_i
 
+    def log_move(self, car_id, step):
+        # add current move to list of moves
+        self.moves.append([car_id, step])
+
+    def save_log(self):
+        # create output csv file
+        with open('data/logs/output.csv', 'w') as output_file:
+            csv_writer = csv.writer(output_file, delimiter=',')
+
+            # write headers and moves in output file
+            csv_writer.writerow(['car', 'move'])
+            csv_writer.writerows(self.moves)
