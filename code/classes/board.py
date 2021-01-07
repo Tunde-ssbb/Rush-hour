@@ -1,3 +1,5 @@
+from car import Car
+import csv
 import numpy as np
 
 class Board():
@@ -6,7 +8,7 @@ class Board():
     def __init__(self, size, csv):
         self.size = size
         self.cars = {}
-        #load_cars(csv)
+        load_cars(csv)
         self.board = np.full((size, size), "#")
         load_board(self)
 
@@ -21,7 +23,15 @@ class Board():
 
 
     def load_cars(self, source_file):
-        pass
+        
+        # read into sourcefile
+        with open(source_file, 'r') as csv_file:
+            car_reader = csv.DictReader(csv_file, delimiter=',')
+
+            # create object for each car in file and store in dictionary
+            for row in car_reader:
+                car_object = Car(row['car'], row['orientation'], int(row['length']), int(row['row']), int(row['col']))
+                self.cars.update({row['car']: car_object})
 
     def draw_board(self):
         return self.board
