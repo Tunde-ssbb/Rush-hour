@@ -1,7 +1,6 @@
-from car import Car
 import csv
 import numpy as np
-
+from code.classes.car import Car
 
 
 class Board():
@@ -9,9 +8,9 @@ class Board():
     def __init__(self, size, csv):
         self.size = size
         self.cars = {}
-        load_cars(csv)
+        self.load_cars(csv)
         self.board = np.full((size, size), "#")
-        load_board(self)
+        self.load_board()
 
     def load_board(self):
         # fill the board
