@@ -2,8 +2,9 @@ from car import Car
 import csv
 import numpy as np
 
+
+
 class Board():
-    pass
 
     def __init__(self, size, csv):
         self.size = size
