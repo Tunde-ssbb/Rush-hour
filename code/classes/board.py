@@ -91,13 +91,6 @@ class Board():
     def won(self):
         pass
     
-    # util function used in move
-    def range_for_move_order(self, step, length):
-        if step < 0:
-            range_of_i = range(length)
-        else:
-            range_of_i = range(length - 1, -1, -1)
-        return range_of_i
 
     def log_move(self, car_id, step):
         # add current move to list of moves
@@ -111,3 +104,11 @@ class Board():
             # write headers and moves in output file
             csv_writer.writerow(['car', 'move'])
             csv_writer.writerows(self.moves)
+
+    # util function used in move
+    def range_for_move_order(self, step, length):
+        if step < 0:
+            range_of_i = range(length)
+        else:
+            range_of_i = range(length - 1, -1, -1)
+        return range_of_i
