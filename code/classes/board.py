@@ -8,6 +8,7 @@ class Board():
     def __init__(self, size, csv):
         self.size = size
         self.cars = {}
+        self.moves = []
         self.load_cars(csv)
         self.board = np.full((size, size), "#")
         self.load_board()
@@ -45,3 +46,5 @@ class Board():
     def won(self):
         pass
 
+    def log_move(self, car_id, step):
+        self.moves.append((car_id, step))
