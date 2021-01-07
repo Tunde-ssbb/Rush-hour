@@ -38,7 +38,27 @@ class Board():
         return self.board
 
     def validate_move(self, car, step):
-        pass
+        car = self.cars[car]
+
+        # isolate board row/column
+        if car.orientation == "H":
+            board = self.board[car.y,:]
+            place = car.x
+        else:
+            board = self.board[:,car.x]
+            place = car.y
+
+        # isolate path of move
+        if step < 0:
+            path = board[place + step : place]
+        else:
+            path = board[place + car.length : (place + car.length + step)%board.size]
+
+        # check if path is free
+        if path.size:
+            return np.all(path == "#") 
+        return False
+
 
     def move(self, car, step):
         pass
