@@ -54,16 +54,15 @@ class Board():
         else:
             board = self.board[:,car.x]
             place = car.y
-            step = -step
 
         # isolate path of move
         if step < 0:
             path = board[place + step : place]
         else:
-            path = board[place + car.length : (place + car.length + step)]
+            path = board[place + car.length : (place + car.length + step)%board.size]
 
         # check if path is free
-        if path.size == abs(step):
+        if path.size:
             return np.all(path == "#") 
         return False
 
@@ -98,7 +97,7 @@ class Board():
 
     def won(self):
         car = self.cars['X']
-        return car.x == self.size - (car.length -1)
+        return (car.x == self.size - car.length)
     
 
     def log_move(self, car_id, step):
