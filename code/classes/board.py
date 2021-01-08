@@ -35,7 +35,14 @@ class Board():
                 self.cars.update({row['car']: car_object})
 
     def draw_board(self):
-        return self.board
+    
+        for i in range(self.size):
+            for j in range(self.size):
+                print(self.board[i][j] + "  ", end="")
+            print("")
+        print("---" * self.size)
+        
+
 
     def validate_move(self, car, step):
         car = self.cars[car]
@@ -47,16 +54,15 @@ class Board():
         else:
             board = self.board[:,car.x]
             place = car.y
-            step = -step
 
         # isolate path of move
         if step < 0:
             path = board[place + step : place]
         else:
-            path = board[place + car.length : (place + car.length + step)]
+            path = board[place + car.length : (place + car.length + step)%board.size]
 
         # check if path is free
-        if path.size == abs(step):
+        if path.size:
             return np.all(path == "#") 
         return False
 
@@ -90,8 +96,8 @@ class Board():
                 self.board[y + i, x],self.board[y + step + i, x] = self.board[y + step + i, x], self.board[y + i, x]
 
     def won(self):
-        car = self.cars['X']
-        return (car.x == board.size - (car.length - 1))
+        pass
+    
 
     def log_move(self, car_id, step):
         # add current move to list of moves

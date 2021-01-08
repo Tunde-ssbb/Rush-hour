@@ -6,7 +6,7 @@ data = "./data/gameboards/Rushhour6x6_1.csv"
 board = Board(6,data)
 
 board.load_board()
-print(board.draw_board())
+board.draw_board()
 
 
 while True:
@@ -20,7 +20,7 @@ while True:
     elif board.validate_move(move, step):
         board.move(move, step)
         board.log_move(move, step)
-        print(board.draw_board())
+        board.draw_board()
     else:
         print("Invalid move")
     
