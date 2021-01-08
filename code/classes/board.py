@@ -35,7 +35,14 @@ class Board():
                 self.cars.update({row['car']: car_object})
 
     def draw_board(self):
-        return self.board
+    
+        for i in range(self.size):
+            for j in range(self.size):
+                print(self.board[i][j] + "  ", end="")
+            print("")
+        print("---" * self.size)
+        
+
 
     def validate_move(self, car, step):
         car = self.cars[car]
