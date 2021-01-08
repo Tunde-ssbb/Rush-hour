@@ -21,6 +21,8 @@ while True:
         board.move(move, step)
         board.log_move(move, step)
         board.draw_board()
+        if board.won():
+            break
     else:
         print("Invalid move")
     
