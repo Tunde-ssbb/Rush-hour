@@ -54,12 +54,13 @@ class Board():
         else:
             board = self.board[:,car.x]
             place = car.y
+            step = -step
 
         # isolate path of move
         if step < 0:
             path = board[place + step : place]
         else:
-            path = board[place + car.length : (place + car.length + step)%board.size]
+            path = board[place + car.length : (place + car.length + step)]
 
         # check if path is free
         if path.size == abs(step):
