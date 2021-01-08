@@ -98,7 +98,7 @@ class Board():
 
     def won(self):
         car = self.cars['X']
-        return car.x == self.size - (car.length -1)
+        return (car.x == self.size - car.length)
     
 
     def log_move(self, car_id, step):
