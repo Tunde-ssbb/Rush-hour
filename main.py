@@ -8,8 +8,24 @@ board = Board(6,data)
 board.load_board()
 print(board.draw_board())
 
-board.move("A",-1)
-board.move("C",-1)
-board.move("J",-1)
-board.move("I",-2)
-print(board.draw_board())
+
+while True:
+    move = input("Car:")
+
+    if move == "q":
+        break
+    step = int(input("Step: "))
+    if move not in board.cars.keys():
+        print("Invalid car")
+    elif board.validate_move(move, step):
+        board.move(move, step)
+        board.log_move(move, step)
+        print(board.draw_board())
+    else:
+        print("Invalid move")
+    
+
+board.save_log()
+print("Game ended")
+     
+
