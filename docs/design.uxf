@@ -1,9 +1,12 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>168</x><y>132</y><w>190</w><h>200</h></coordinates><panel_attributes>Board
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>128</x><y>187</y><w>190</w><h>310</h></coordinates><panel_attributes>Game
 --
 size: int
 cars: dict{car.letter_id:car}
 board: np.array
-moves: [tuples]
+archive: Archive
+current_node: Node
+score:int
+possible_moves:set(car.letter_id)
 --
 load_board(self): None
 load_cars(self, source_file): None
@@ -11,16 +14,30 @@ draw_board(self): str
 validate_move(self, car:Car, step:int): Bool
 move(self, car:Car, step:int): None
 won(self): Bool
-log_move(self, car:Car, step:int): None
-save_log(self): csv
+archive_board(self):
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>468</x><y>132</y><w>180</w><h>200</h></coordinates><panel_attributes>Car
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>458</x><y>187</y><w>180</w><h>200</h></coordinates><panel_attributes>Car
 --
 letter_id: str
 orientation: str
 length: int
 x: int
 y: int
+moves_forward:int
+moves_backward:int
 --
-move(step:int): None</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>348</x><y>132</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes><additional_attributes>10;10;120;10</additional_attributes></element></diagram>
+move(step:int): None</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>308</x><y>187</y><w>170</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>130</x><y>10</y><w>130</w><h>150</h></coordinates><panel_attributes>Node
+--
+hash:str
+score:int
+id:int
+previous: set(Nodes)
+next:set(Nodes)
+--
+methods</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>350</x><y>2</y><w>130</w><h>150</h></coordinates><panel_attributes>Archive
+--
+Nodes:set(Nodes)
+--
+create_node()
+;</panel_attributes><additional_attributes></additional_attributes></element></diagram>
