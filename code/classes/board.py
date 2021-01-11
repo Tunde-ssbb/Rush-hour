@@ -1,5 +1,8 @@
 import csv
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import animation
+
 from code.classes.car import Car
 from code.classes.archive import Archive
 
@@ -116,6 +119,17 @@ class Board():
             csv_writer.writerow(['car', 'move'])
             csv_writer.writerows(self.moves)
 
+
+    def archive_board(self):
+        # create string representation of board
+        hash_board = ""
+        for i in range(self.size):
+            for j in range(self.size):
+                hash_board = hash_board + str(self.board[i][j])
+
+        self.archive.add_node(hash_board, 1)
+
+
     # util function used in move
     def range_for_move_order(self, step, length):
         if step < 0:
@@ -156,4 +170,36 @@ class Board():
             else:
                 car.moves = (-moves_forward, moves_backward)
             
+def make_animation(moves, size, csv):
+    board = Board(6,csv)
+    colormap = { "X" : [255,0,0] , "A" : [0,0,255], "B" : [255,255,0],
+            "C" : [171, 106, 30], "D" : [40, 96, 99], "E" : [0,0,255],
+            "F" : [40, 96, 99],"G" : [0,255,255],"H" : [0,0,255],
+            "I" : [0,255,255],"J" : [40, 96, 99],"K" : [171, 106, 30],"L" : [40, 96, 99]}
+    
+    animationframes = []
+
+    fig = plt.figure("animation",dpi=100)
+    animationframes.append((plt.imshow(make_animation_frame(board.board, size, colormap)),))
+
+    for move in moves:
+        board.move(move[0],move[1])
+        animationframes.append((plt.imshow(make_animation_frame(board.board, size, colormap)),))
+
+    plt.axis("off")
+    im_animation = animation.ArtistAnimation(fig, animationframes, interval=500, repeat_delay=1000, blit=True)
+    im_animation.save(("animation.gif"), writer="Pillow") 
+    plt.show()
+        
+
+def make_animation_frame(board, size, colormap):
+    image = np.zeros((6,6,3))
+    for i in range(size):
+        for j in range(size):
+            value = board[i][j]
+            if value != "#":
+                image[i][j] = colormap[value]
+
+    return image.astype(np.uint8)
+
 
