@@ -8,7 +8,6 @@ board = Board(6,data)
 board.load_board()
 board.draw_board()
 
-
 while True:
     move = input("Car:")
 
@@ -21,6 +20,7 @@ while True:
         board.move(move, step)
         board.log_move(move, step)
         board.draw_board()
+        board.find_moves()
         if board.won():
             print("Game was won")
             break
