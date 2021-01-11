@@ -1,3 +1,5 @@
+from code.classes.node import Node
+
 class Archive:
 
     def __init__(self):
