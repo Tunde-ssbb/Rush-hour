@@ -123,9 +123,9 @@ class Board():
     def archive_board(self):
         # create string representation of board
         hash_board = ""
-        for i in range(self.size):
-            for j in range(self.size):
-                hash_board = hash_board + str(self.board[i][j])
+        for row in self.board:
+            for place in row:
+                hash_board = hash_board + str(place)
 
         self.archive.add_node(hash_board, 1)
 
