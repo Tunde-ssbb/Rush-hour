@@ -116,6 +116,17 @@ class Board():
             csv_writer.writerow(['car', 'move'])
             csv_writer.writerows(self.moves)
 
+
+    def archive_board(self):
+        # create string representation of board
+        hash_board = ""
+        for i in range(self.size):
+            for j in range(self.size):
+                hash_board = hash_board + str(self.board[i][j])
+
+        self.archive.add_node(hash_board, 1)
+
+
     # util function used in move
     def range_for_move_order(self, step, length):
         if step < 0:
