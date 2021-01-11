@@ -4,4 +4,5 @@ class Archive:
         self.nodes = set()
 
     def add_node(self, hash_board, score):
-        Node(hash_board, score)
+        node = Node(hash_board, score)
+        self.nodes.add(node)
