@@ -123,3 +123,37 @@ class Board():
         else:
             range_of_i = range(length - 1, -1, -1)
         return range_of_i
+
+    def find_moves(self):
+        for car_id in self.cars:
+            car = self.cars[car_id]
+
+            # isolate board row
+            if car.orientation == "H":
+                board = self.board[car.y,:]
+                place = car.x
+            else:
+                board = self.board[:,car.x]
+                place = car.y
+
+            backward = board[:place]
+            forward = board[place+car.length:]
+            moves_forward = 0
+            moves_backward = 0
+            for i in forward:
+                if i=="#":
+                    moves_forward += 1
+                else:
+                    break
+            for i in np.flip(backward):
+                if i=="#":
+                    moves_backward += 1
+                else:
+                    break
+ 
+            if car.orientation == "H":
+                car.moves = (-moves_backward, moves_forward)
+            else:
+                car.moves = (-moves_forward, moves_backward)
+            
+

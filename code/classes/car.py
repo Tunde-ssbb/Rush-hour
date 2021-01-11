@@ -6,6 +6,7 @@ class Car():
         self.length = length
         self.x = x - 1
         self.y = y - 1
+        self.moves = ()
     
     def move(self,step):
         if self.orientation == "H":
