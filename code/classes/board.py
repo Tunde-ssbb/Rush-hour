@@ -1,6 +1,7 @@
 import csv
 import numpy as np
 from code.classes.car import Car
+from code.classes.archive import Archive
 
 
 class Board():
@@ -9,6 +10,7 @@ class Board():
         self.size = size
         self.cars = {}
         self.moves = []
+        self.archive = Archive()
         self.load_cars(csv)
         self.board = np.full((size, size), "#")
         self.load_board()
