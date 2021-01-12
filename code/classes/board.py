@@ -13,7 +13,7 @@ class Board():
         self.size = size
         self.cars = {}
         self.moves = []
-        self.archive = Archive()
+        self.archive = set()
         self.load_cars(csv)
         self.board = np.full((size, size), "#")
         self.load_board()
