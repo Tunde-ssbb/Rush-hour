@@ -2,9 +2,12 @@ from code.classes.board import Board
 from code.classes.car import Car
 from code.classes.board import make_animation
 from code.algorithms.random import random_algorithm
+from code.algorithms.depth_first_Tünde import depth_first
 import random
 
-random_algorithm(1000)
+#random_algorithm(1000)
+
+depth_first(1, 6, "./data/gameboards/Rushhour6x6_1.csv")
 
 # board_number = "4"
 # board_sizes = { "1": 6, "2": 6, "3": 6,
