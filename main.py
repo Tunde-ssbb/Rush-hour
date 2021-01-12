@@ -2,8 +2,13 @@ from code.classes.board import Board
 from code.classes.car import Car
 from code.classes.board import make_animation
 
-data = "./data/gameboards/Rushhour6x6_1.csv"
-board = Board(6,data)
+board_number = "4"
+board_sizes = { "1": 6, "2": 6, "3": 6,
+                "4": 9, "5": 9, "6": 9,
+                "7": 12}
+
+data = f"./data/gameboards/Rushhour{board_sizes[board_number]}x{board_sizes[board_number]}_{board_number}.csv"
+board = Board(board_sizes[board_number],data)
 
 board.load_board()
 board.draw_board()
@@ -27,8 +32,8 @@ while True:
     else:
         print("Invalid move")
     
-make_animation(game.moves, game.size, data)
-board.save_log()
+make_animation(board.moves, board.size, data)
+#board.save_log()
 print("Game ended")
      
 
