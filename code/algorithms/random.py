@@ -1,4 +1,4 @@
-from code.classes.board import Board
+from code.classes.board import Board, make_animation
 import random
 
 def random_algorithm(moves):
@@ -28,3 +28,4 @@ def random_algorithm(moves):
             break
 
     game.save_log()
+    make_animation(game.moves, game.size, data)

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 from code.classes.car import Car
-from code.classes.archive import Archive
+#from code.classes.archive import Archive
 
 
 class Board():
@@ -134,7 +134,7 @@ class Board():
             for place in row:
                 hash_board = hash_board + str(place)
 
-        self.archive.add_node(hash_board, 1)
+        self.archive.add(hash_board)
 
 
     # util function used in move
