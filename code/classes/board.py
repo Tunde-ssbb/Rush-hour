@@ -167,8 +167,6 @@ class Board():
 
     def find_moves(self):
         possible_moves = {} 
-        print("finding possibilities for")
-        self.draw_board()
         for car_id in self.cars:
             car = self.cars[car_id]
 
