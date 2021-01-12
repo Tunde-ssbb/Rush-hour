@@ -4,7 +4,7 @@ from code.classes.board import make_animation
 from code.algorithms.random import random_algorithm
 import random
 
-random_algorithm(10)
+random_algorithm(1000)
 
 # board_number = "4"
 # board_sizes = { "1": 6, "2": 6, "3": 6,
