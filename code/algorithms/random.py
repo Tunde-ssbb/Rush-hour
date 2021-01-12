@@ -13,12 +13,16 @@ def random_algorithm(moves):
     while current_move < moves:
         possible_moves = game.find_moves()
         car = random.choice(list(possible_moves.keys()))
-        step = random.randrange(possible_moves[car][0], possible_moves[car][1])
-        if step != 0:
-            game.move(car, step)
-            game.log_move(car, step)
-            game.draw_board()
-            current_move += 1
+        possible_steps = list(range(possible_moves[car][0], possible_moves[car][1]+1))
+        if 0 in possible_steps:
+            possible_steps.remove(0)
+        
+        step = random.choice(possible_steps)
+        
+        game.move(car, step)
+        game.log_move(car, step)
+        game.draw_board()
+        # current_move += 1
         
         if game.won():
             break

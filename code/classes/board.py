@@ -27,6 +27,13 @@ class Board():
                 else:
                     self.board[car.y + i][car.x] = car.letter_id
 
+    def load_board_from_hash(self, hash):
+        for i in range(self.size):
+            row = hash[:self.size]
+            for j in range(self.size):
+                self.board[i][j]= row[j]
+            hash = hash[self.size:]
+
 
     def load_cars(self, source_file):
         
