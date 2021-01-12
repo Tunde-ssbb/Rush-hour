@@ -28,13 +28,21 @@ class Board():
                     self.board[car.y + i][car.x] = car.letter_id
 
     def load_board_from_hash(self, hash):
+        cars_done = set()
+        # set cars on the board
         for i in range(self.size):
             row = hash[:self.size]
             for j in range(self.size):
                 self.board[i][j]= row[j]
+                # set car x and y
+                if row[j] != "#" and row[j] not in cars_done:
+                    car = self.cars[row[j]]
+                    car.x = i
+                    car.y = j
+                    cars_done.add(row[j])
+
             hash = hash[self.size:]
-
-
+        
     def load_cars(self, source_file):
         
         # read into sourcefile
