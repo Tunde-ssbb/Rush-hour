@@ -139,7 +139,7 @@ class Board():
         return range_of_i
 
     def find_moves(self):
-        possible_moves = [] 
+        possible_moves = {} 
         for car_id in self.cars:
             car = self.cars[car_id]
 
@@ -173,7 +173,7 @@ class Board():
             car.moves = (-moves_backward, moves_forward)
 
             if moves_forward != 0 or moves_backward != 0:
-                possible_moves.append([car.letter_id,(-moves_backward, moves_forward)])
+                possible_moves.update({car.letter_id: [-moves_backward, moves_forward]})
 
         return possible_moves
 
