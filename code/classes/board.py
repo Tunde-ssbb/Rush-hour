@@ -13,7 +13,7 @@ class Board():
         self.size = size
         self.cars = {}
         self.moves = []
-        self.working_solution_movesets = []
+        self.shortest_solution_movesets = []
         self.archive = set()
         self.load_cars(csv)
         self.board = np.full((size, size), "#")
@@ -126,6 +126,9 @@ class Board():
         # add current move to list of moves
         self.moves.append([car_id, step])
     
+    def log_shortest_solution_movesets(self, moveset):
+        self.shortest_solution_movesets = moveset
+
     def step_back(self):
         self.moves.pop()
 
