@@ -13,6 +13,7 @@ class Board():
         self.size = size
         self.cars = {}
         self.moves = []
+        self.working_solution_movesets = []
         self.archive = set()
         self.load_cars(csv)
         self.board = np.full((size, size), "#")
@@ -37,8 +38,8 @@ class Board():
                 # set car x and y
                 if row[j] != "#" and row[j] not in cars_done:
                     car = self.cars[row[j]]
-                    car.x = i
-                    car.y = j
+                    car.x = j
+                    car.y = i
                     cars_done.add(row[j])
 
             hash = hash[self.size:]
@@ -124,6 +125,9 @@ class Board():
     def log_move(self, car_id, step):
         # add current move to list of moves
         self.moves.append([car_id, step])
+    
+    def step_back(self):
+        self.moves.pop()
 
     def save_log(self):
         # create output csv file
@@ -146,6 +150,12 @@ class Board():
 
         return hash_board
 
+    def give_hash(self):
+        hash_board = ""
+        for row in self.board:
+            for place in row:
+                hash_board = hash_board + str(place)
+        return hash_board
 
     # util function used in move
     def range_for_move_order(self, step, length):
