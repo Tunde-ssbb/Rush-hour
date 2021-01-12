@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 from code.classes.car import Car
-from code.classes.archive import Archive
+#from code.classes.archive import Archive
 
 
 class Board():
@@ -13,7 +13,7 @@ class Board():
         self.size = size
         self.cars = {}
         self.moves = []
-        self.archive = Archive()
+        self.archive = set()
         self.load_cars(csv)
         self.board = np.full((size, size), "#")
         self.load_board()
