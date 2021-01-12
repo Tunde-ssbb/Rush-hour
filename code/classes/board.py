@@ -139,6 +139,7 @@ class Board():
         return range_of_i
 
     def find_moves(self):
+        possible_moves = [] 
         for car_id in self.cars:
             car = self.cars[car_id]
 
@@ -165,10 +166,17 @@ class Board():
                 else:
                     break
  
-            if car.orientation == "H":
-                car.moves = (-moves_backward, moves_forward)
-            else:
-                car.moves = (-moves_forward, moves_backward)
+            if car.orientation == "V":
+                temp = moves_backward
+                moves_backward = moves_forward
+                moves_forward = temp
+            car.moves = (-moves_backward, moves_forward)
+
+            if moves_forward != 0 or moves_backward != 0:
+                possible_moves.append([car.letter_id,(-moves_backward, moves_forward)])
+
+        return possible_moves
+
             
 def make_animation(moves, size, csv):
     board = Board(6,csv)

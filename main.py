@@ -20,7 +20,7 @@ while True:
         board.move(move, step)
         board.log_move(move, step)
         board.draw_board()
-        board.find_moves()
+        print(board.find_moves())
         if board.won():
             print("Game was won")
             break
