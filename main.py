@@ -23,14 +23,14 @@ game.load_board()
 shortest, lengths = breadth_first_algorithm(game)
 make_animation(shortest, board_sizes[board_number], data)
 print(len(lengths)," solutions were found.")
-# print(lengths)
-# lengths = [5,7,3,9,13,12,12,9,7,7]
-# lengths = np.array(lengths)
-# range_lengths = range(np.min(lengths), np.max(lengths)) 
-# height = np.zeros(len(range_lengths))
 
-# for i in range(len(range_lengths)):
-#     height[i] = np.count_nonzero(lengths == range_lengths[i])
+lengths = np.array(lengths)
+range_lengths = range(np.min(lengths), np.max(lengths)) 
+height = np.zeros(len(range_lengths))
+
+for i in range(len(range_lengths)):
+    height[i] = np.count_nonzero(lengths == range_lengths[i])
+    print(f"there are {height[i]} solutions of length {range_lengths[i]}")
 
 # print(range_lengths, height)
 # plt.plot(np.array(range_lengths),height)
