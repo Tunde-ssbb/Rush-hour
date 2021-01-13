@@ -3,7 +3,11 @@ from code.classes.car import Car
 from code.classes.board import make_animation, save_log
 from code.algorithms.random import random_algorithm
 from code.algorithms.depth_first_first_jeroen import depth_first_algorithm, check_solution, depth_first_main, remove_useless_moves
+from code.algorithms.breadth_first_Tünde import breadth_first_algorithm
 import random
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
 
 #random_algorithm(20)
 
@@ -45,6 +49,41 @@ if  len(solutions) > 0:
 
         
 #print(short_solutions[0])
+#random_algorithm(1000)
+
+#print(sys.getrecursionlimit())
+
+board_number = "1"
+board_sizes = { "1": 6, "2": 6, "3": 6,
+                "4": 9, "5": 9, "6": 9,
+                "7": 12}
+
+data = f"./data/gameboards/Rushhour{board_sizes[board_number]}x{board_sizes[board_number]}_{board_number}.csv"
+game = Board(board_sizes[board_number],data)
+game.load_board()
+shortest, lengths = breadth_first_algorithm(game)
+make_animation(shortest, board_sizes[board_number], data)
+print(len(lengths)," solutions were found.")
+# print(lengths)
+# lengths = [5,7,3,9,13,12,12,9,7,7]
+# lengths = np.array(lengths)
+# range_lengths = range(np.min(lengths), np.max(lengths)) 
+# height = np.zeros(len(range_lengths))
+
+# for i in range(len(range_lengths)):
+#     height[i] = np.count_nonzero(lengths == range_lengths[i])
+
+# print(range_lengths, height)
+# plt.plot(np.array(range_lengths),height)
+# fig = plt.figure()
+# ax = fig.add_axes([0,0,1,1])
+# ax.bar(np.array(range_lengths), height)
+# fig.show()
+
+
+
+
+# print(board.find_moves())
 
 
 # while True:
