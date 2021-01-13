@@ -3,7 +3,7 @@ from code.classes.board import Board
 def depth_first_algorithm(game):
     if game.won():
         moves = game.moves[:]
-        #print(f"Winning moves : { game.moves }")
+        print(f"Winning moves : { game.moves }")
         if len(moves) < len(game.shortest_solution_movesets) or game.shortest_solution_movesets == []:
             game.log_shortest_solution_movesets(moves)
 
