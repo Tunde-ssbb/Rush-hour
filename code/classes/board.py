@@ -208,8 +208,9 @@ class Board():
         return possible_moves
 
             
-def make_animation(moves, size, csv):
+def make_animation(moves, size, csv, name):
     board = Board(size,csv)
+
     red = [255,0,0]
     blue = [0,0,255]
     yellow = [255, 255, 0]
@@ -273,7 +274,7 @@ def make_animation(moves, size, csv):
 
     plt.axis("off")
     im_animation = animation.ArtistAnimation(fig, animationframes, interval=500, repeat_delay=1000, blit=True)
-    im_animation.save(("animation.gif"), writer="Pillow") 
+    im_animation.save((name + ".gif"), writer="Pillow") 
     #plt.show()
         
 
@@ -286,5 +287,15 @@ def make_animation_frame(board, size, colormap):
                 image[i][j] = colormap[value]
 
     return image.astype(np.uint8)
+
+
+def save_log(moves, name):
+    # create output csv file
+    with open('data/logs/output'+name+'.csv', 'w') as output_file:
+        csv_writer = csv.writer(output_file, delimiter=',')
+
+        # write headers and moves in output file
+        csv_writer.writerow(['car', 'move'])
+        csv_writer.writerows(moves)
 
 
