@@ -3,9 +3,10 @@ import random
 
 class Random_algorithm:
 
-    def __init__(self, game):
+    def __init__(self, game, data):
         self.game = game
         self.game.load_board()
+        self.data = data
 
     def run(self):
         # repeat until game is won

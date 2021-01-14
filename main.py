@@ -36,7 +36,7 @@ if __name__ == "__main__":
     if algorithm == "random":
         # create board object and run algorithm
         game = Board(size, data)
-        random = Random_algorithm(game)
+        random = Random_algorithm(game, data)
         random.run()
         print(f"Number of moves: {len(random.game.moves)}")
 
