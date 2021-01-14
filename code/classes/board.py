@@ -86,7 +86,7 @@ class Board():
         """
         Validate a specific move. Input: car (str:letter_id), step(int). Output: boolean.
         """
-
+        
         # find possible moves
         moves = self.find_moves()
 
@@ -340,7 +340,7 @@ def make_animation_frame(board, size, colormap):
 
 
 def save_log(moves, name):
-    
+
     # create output csv file
     with open('data/logs/output'+name+'.csv', 'w') as output_file:
         csv_writer = csv.writer(output_file, delimiter=',')
