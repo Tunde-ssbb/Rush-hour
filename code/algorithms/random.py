@@ -30,4 +30,4 @@ def random_algorithm(game):
 
     # save logged moves and create animation of moves
     game.save_log()
-    make_animation(game.moves, game.size, data)
+    # make_animation(game.moves, game.size, data)

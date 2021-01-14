@@ -9,61 +9,79 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
-#random_algorithm(20)
-
-board_number = "1"
+# dictionary of board numbers with corresponding sizes
 board_sizes = { "1": 6, "2": 6, "3": 6,
                  "4": 9, "5": 9, "6": 9,
                  "7": 12, "test" : 4}
 
-data = f"./data/gameboards/Rushhour{board_sizes[board_number]}x{board_sizes[board_number]}_{board_number}.csv"
-#game = Board(board_sizes[board_number],data)
-#game.draw_board()
+# check if command line argument input is valid
+if len(sys.argv) != 3:
+    print("Invalid input. Use format: main.py <board number> <algorithm>")
+    sys.exit(0)
 
-number_of_attempts = 10
-max_moves = 60
+board_number = sys.argv[1]
+algorithm = sys.argv[2]
+
+# check if board number is valid
+if board_number not in board_sizes:
+    print("Invalid board number. Choose a board number from 1 to 7")
+    sys.exit(0)
+
 size = board_sizes[board_number]
-solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
-#solutions = [[['A', -1], ['C', -1], ['G', 1], ['L', 1], ['B', -1], ['J', -1], ['B', 1], ['A', 1], ['I', -2], ['A', -1], ['H', 1], ['A', 1], ['E', -1], ['D', -1], ['A', -1], ['G', 1], ['D', 1], ['L', 1], ['J', -2], ['D', -1], ['E', -2], ['D', 1], ['H', -1], ['D', -1], ['I', 1], ['I', 1], ['I', 1], ['H', 1], ['E', 1], ['E', 1], ['J', 1], ['J', 1], ['J', 1], ['L', -2], ['J', -1], ['F', 1], ['X', 1], ['F', -1], ['J', 1], ['F', 1], ['E', -1], ['K', 2], ['E', -1], ['F', 1], ['X', 1], ['K', -2], ['X', 1], ['K', 2], ['G', -1], ['K', -2], ['B', -1], ['F', -2], ['I', 1], ['X', 1]]]
-#print(solutions[0])
-
-if  len(solutions) > 0:
-    short_solutions = []
-    solution_number = 1
-    for solution in solutions:
-        short_solution = solution
-        old_length = len(short_solution)
-        new_length = old_length - 1
-        while old_length > new_length:
-            #print(f"solution_number {solution_number} : length {len(short_solution)}")
-            old_length = len(short_solution)
-            short_solution = remove_useless_moves(short_solution, size, data)
-            new_length = len(short_solution)
-            #print(f"solution_number {solution_number} : to length {len(short_solution)}")
-        
-        #make_animation(short_solution, size, data, str(solution_number))
-        #save_log(short_solution, str(solution_number))
-        solution_number += 1
-        print(f"solution_number {solution_number} length : {len(short_solution)}")
-        short_solutions.append(short_solution)
-
-        
-#print(short_solutions[0])
-#random_algorithm(1000)
-
-#print(sys.getrecursionlimit())
-
-board_number = "1"
-board_sizes = { "1": 6, "2": 6, "3": 6,
-                "4": 9, "5": 9, "6": 9,
-                "7": 12}
-
 data = f"./data/gameboards/Rushhour{board_sizes[board_number]}x{board_sizes[board_number]}_{board_number}.csv"
-game = Board(board_sizes[board_number],data)
-game.load_board()
-shortest, lengths = breadth_first_algorithm(game)
-make_animation(shortest, board_sizes[board_number], data)
-print(len(lengths)," solutions were found.")
+
+
+# --------------------------- Random algorithm --------------------------
+if algorithm == "random":
+    # create board object and run algorithm
+    game = Board(size, data)
+    random_algorithm(game)
+    print(f"Number of moves: {len(game.moves)}")
+
+
+# --------------------------- depth algorithm --------------------------
+elif algorithm == "depth_first":
+    number_of_attempts = int(input("Number of attempts: "))
+    max_moves = int(input("Maximum number of moves: "))
+    solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
+
+    if  len(solutions) > 0:
+        short_solutions = []
+        solution_number = 1
+        for solution in solutions:
+            short_solution = solution
+            old_length = len(short_solution)
+            new_length = old_length - 1
+            while old_length > new_length:
+                #print(f"solution_number {solution_number} : length {len(short_solution)}")
+                old_length = len(short_solution)
+                short_solution = remove_useless_moves(short_solution, size, data)
+                new_length = len(short_solution)
+                #print(f"solution_number {solution_number} : to length {len(short_solution)}")
+            
+            #make_animation(short_solution, size, data, str(solution_number))
+            #save_log(short_solution, str(solution_number))
+            solution_number += 1
+            print(f"solution_number {solution_number} length : {len(short_solution)}")
+            short_solutions.append(short_solution)     
+    #print(short_solutions[0])
+    #print(sys.getrecursionlimit())
+
+
+# --------------------------- breadth algorithm --------------------------
+elif algorithm == "breadth_first":
+    game = Board(size, data)
+    game.load_board()
+    shortest, lengths = breadth_first_algorithm(game)
+    make_animation(shortest, board_sizes[board_number], data)
+    print(len(lengths)," solutions were found.")
+
+
+# ------------------------------------------------------------------------
+else:
+    print("Invalid algorithm input. Choose: random, depth_first, or breadth_first")
+    sys.exit(0)
+
 # print(lengths)
 # lengths = [5,7,3,9,13,12,12,9,7,7]
 # lengths = np.array(lengths)
@@ -79,34 +97,3 @@ print(len(lengths)," solutions were found.")
 # ax = fig.add_axes([0,0,1,1])
 # ax.bar(np.array(range_lengths), height)
 # fig.show()
-
-
-
-
-# print(board.find_moves())
-
-
-# while True:
-#     move = input("Car:")
-
-#     if move == "q":
-#         break
-#     step = int(input("Step: "))
-#     if move not in board.cars.keys():
-#         print("Invalid car")
-#     elif board.validate_move(move, step):
-#         board.move(move, step)
-#         board.log_move(move, step)
-#         board.draw_board()
-#         print(board.find_moves())
-#         if board.won():
-#             print("Game was won")
-#             break
-#     else:
-#         print("Invalid move")
-    
-# make_animation(board.moves, board.size, data)
-# #board.save_log()
-# print("Game ended")
-     
-
