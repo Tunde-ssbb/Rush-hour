@@ -79,6 +79,31 @@ if __name__ == "__main__":
         print(len(lengths)," solutions were found.")
 
 
+    elif algorithm == "check":
+        board = Board(size, data)
+
+        board.load_board()
+        board.draw_board()
+        while True:
+            move = input("Car:")
+            if move == "q":
+                break
+            step = int(input("Step: "))
+            if move not in board.cars.keys():
+                print("Invalid car")
+            elif board.validate_move(move, step):
+                board.move(move, step)
+                board.log_move(move, step)
+                board.draw_board()
+                if board.won():
+                    print("Game was won")
+                    break
+            else:
+                print("Invalid move")
+            
+        board.save_log()
+        print("Game ended")
+
     # ------------------------------------------------------------------------
     else:
         print("Invalid algorithm input. Choose: random, depth_first, or breadth_first")
