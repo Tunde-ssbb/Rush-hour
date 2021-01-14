@@ -64,6 +64,10 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------
     else:
         print("Invalid algorithm input. Choose: random, depth_first, or breadth_first")
+<<<<<<< HEAD
         sys.exit(0)
 
 
+=======
+        sys.exit(0)
+>>>>>>> ebc011c397d2605304644033eb5e66984496b47b
