@@ -350,3 +350,12 @@ def save_log(moves, name):
         csv_writer.writerows(moves)
 
 
+def get_cars(data):
+    with open(data, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=',')
+        
+        cars = []
+        for row in csv_reader:
+            cars.append(row['car'])
+
+    return cars
