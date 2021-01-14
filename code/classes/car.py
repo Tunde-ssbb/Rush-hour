@@ -12,4 +12,4 @@ class Car():
         if self.orientation == "H":
             self.x = self.x + step
         else:
-            self.y = self.y - step
+            self.y = self.y + step
