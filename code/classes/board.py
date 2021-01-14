@@ -149,7 +149,7 @@ class Board():
             for place in row:
                 hash_board = hash_board + str(place)
 
-        #self.archive.add(hash_board)
+        self.archive.add(hash_board)
 
         return hash_board
 
