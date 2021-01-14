@@ -36,14 +36,9 @@ if __name__ == "__main__":
     # --------------------------- Random algorithm --------------------------
     if algorithm == "random":
         # create board object and run algorithm
-        best_solution = float('inf')
-        for i in range(25):
-            game = Board(size, data)
-            random = Random_algorithm(game, data)
-            new_solution = random.run()
-            print(new_solution)
-            if new_solution < best_solution:
-                best_solution = new_solution
+        
+        random = Random_algorithm(size, data)
+        best_solution = random.run(100)
         
         print(f"Number of moves: {best_solution}")
 
