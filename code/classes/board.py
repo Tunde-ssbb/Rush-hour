@@ -15,27 +15,40 @@ class Board():
         self.moves = []
         self.shortest_solution_movesets = []
         self.archive = set()
-        self.load_cars(csv)
+        self.load_cars_from_csv(csv)
         self.board = np.full((size, size), "#")
         self.load_board()
 
     def load_board(self):
-        # fill the board
+        """
+        Fill the game board with the appropriate car letters in the right place
+        according to the cars dictionary of the board.
+        """
+
+        # retrieve all car objects and loop
         for car in self.cars.values():
             for i in range(car.length):
+
+                # place letter id in spaces occupied by the car
                 if car.orientation == "H":
                     self.board[car.y][car.x + i] = car.letter_id
                 else:
                     self.board[car.y + i][car.x] = car.letter_id
-
+    
     def load_board_from_hash(self, hash):
+        """
+        Fill the game board with the appropriate car letters in the right place
+        according to a given board hash. input: hash (str)
+        """
         cars_done = set()
-        # set cars on the board
+        
+        # set location of the cars on the board
         for i in range(self.size):
             row = hash[:self.size]
             for j in range(self.size):
                 self.board[i][j]= row[j]
-                # set car x and y
+
+                # set x and y position of car
                 if row[j] != "#" and row[j] not in cars_done:
                     car = self.cars[row[j]]
                     car.x = j
@@ -44,7 +57,10 @@ class Board():
 
             hash = hash[self.size:]
         
-    def load_cars(self, source_file):
+    def load_cars_from_csv(self, source_file):
+        """
+        Create car objects from csv file and place them in cars ditionary.
+        """
         
         # read into sourcefile
         with open(source_file, 'r') as csv_file:
@@ -56,6 +72,9 @@ class Board():
                 self.cars.update({row['car']: car_object})
 
     def draw_board(self):
+        """
+        Create a text-based representation of the board in the terminal
+        """
     
         for i in range(self.size):
             for j in range(self.size):
@@ -63,33 +82,22 @@ class Board():
             print("")
         print("---" * self.size)
         
-
-
     def validate_move(self, car, step):
-        car = self.cars[car]
+        """
+        Validate a specific move. Input: car (str:letter_id), step(int). Output: boolean.
+        """
 
-        # isolate board row/column
-        if car.orientation == "H":
-            board = self.board[car.y,:]
-            place = car.x
-        else:
-            board = self.board[:,car.x]
-            place = car.y
-            step = -step
+        # find possible moves
+        moves = self.find_moves()
 
-        # isolate path of move
-        if step < 0:
-            path = board[place + step : place]
-        else:
-            path = board[place + car.length : (place + car.length + step)]
-
-        # check if path is free
-        if path.size == abs(step):
-            return np.all(path == "#") 
-        return False
+        # return if given move is in possible moves
+        return ((car in moves) and (step in range(moves[car][0], moves[car][1] + 1)))
 
 
     def move(self, car, step):
+        """
+        Move car on board. Input: car(str:letter_id), step(int). 
+        """
         car_object = self.cars[car]
         
         x = car_object.x
@@ -118,21 +126,36 @@ class Board():
                 self.board[y + i, x],self.board[y + step + i, x] = self.board[y + step + i, x], self.board[y + i, x]
 
     def won(self):
+        """
+        Check if the game was won (car X is free to leave). Output: boolean
+        """
         car = self.cars['X']
         return (car.x == self.size - car.length)
     
 
     def log_move(self, car_id, step):
+        """
+        Log a move in the game. Input: car_id (str), step(int)
+        """
         # add current move to list of moves
         self.moves.append([car_id, step])
     
     def log_shortest_solution_movesets(self, moveset):
+        """
+        Save the current moveset as the shortest solution. Input: moveset (list[list[car(str),step(int)]])
+        """
         self.shortest_solution_movesets = moveset
 
     def step_back(self):
+        """
+        Remove last move from saved moveset. Does not adjust the board.
+        """
         self.moves.pop()
 
     def save_log(self):
+        """
+        Save the current saved moveset in a csv file. Output: csv file
+        """
         # create output csv file
         with open('data/logs/output.csv', 'w') as output_file:
             csv_writer = csv.writer(output_file, delimiter=',')
@@ -141,19 +164,23 @@ class Board():
             csv_writer.writerow(['car', 'move'])
             csv_writer.writerows(self.moves)
 
-
     def archive_board(self):
-        # create string representation of board
-        hash_board = ""
-        for row in self.board:
-            for place in row:
-                hash_board = hash_board + str(place)
+        """
+        Add the current state of the board the the game archive (in form of a hash)
+        """
 
+        # fetch string representation of board
+        self.give_hash()
         self.archive.add(hash_board)
 
-        #return hash_board
 
     def give_hash(self):
+        """
+        Creates a string representation of the boardstate (unique to each board setup)
+        Output: hash(str)
+        """
+
+        # create string representation of board
         hash_board = ""
         for row in self.board:
             for place in row:
@@ -162,6 +189,9 @@ class Board():
 
     # util function used in move
     def range_for_move_order(self, step, length):
+        """
+        Help function used in move function. Input: step(int), length(int). Output: range_of_i(range object)
+        """
         if step < 0:
             range_of_i = range(length)
         else:
@@ -169,20 +199,29 @@ class Board():
         return range_of_i
 
     def find_moves(self):
+        """
+        Function find all possible moves in current board state. 
+        Output: possible_moves (dict{car_id(str):moving range(list[start(int),stop(int)])})
+        """
+
         possible_moves = {} 
+
         for car_id in self.cars:
             car = self.cars[car_id]
 
-            # isolate board row
+            # isolate board row/column containing car
             if car.orientation == "H":
                 board = self.board[car.y,:]
                 place = car.x
             else:
                 board = self.board[:,car.x]
                 place = car.y
-
+            
+            # isolate squares ahead, and behind the car
             backward = board[:place]
             forward = board[place+car.length:]
+
+            # count available squares
             moves_forward = 0
             moves_backward = 0
             for i in forward:
@@ -195,13 +234,13 @@ class Board():
                     moves_backward += 1
                 else:
                     break
- 
+
+            # save moves in car object (flip for vertical cars)
             if car.orientation == "V":
-                temp = moves_backward
-                moves_backward = moves_forward
-                moves_forward = temp
+                moves_forward, moves_backward = moves_backward, moves_forward
             car.moves = (-moves_backward, moves_forward)
 
+            # add to possible moves dictionary if moves are possible
             if moves_forward != 0 or moves_backward != 0:
                 possible_moves.update({car.letter_id: [-moves_backward, moves_forward]})
 
@@ -209,8 +248,15 @@ class Board():
 
             
 def make_animation(moves, size, csv, name):
+    """
+    Create an gif animation of a particular moveset for a specfic game under a given name. 
+    Input: moves (list[list[car_id(str),step(int)]]), size (int), csv (start state of board), name (str)
+    """
+
+    # create board
     board = Board(size,csv)
 
+    # define colors
     red = [255,0,0]
     blue = [0,0,255]
     yellow = [255, 255, 0]
@@ -221,6 +267,7 @@ def make_animation(moves, size, csv, name):
     purple = [255, 0, 255]
     grey = [120, 120, 120]
 
+    # define mapping cars to colors
     colormaps = {
         "./data/gameboards/Rushhour6x6_1.csv" : { "X" : red, "A" : blue, "B" : yellow,
                 "C" : orange, "D" : dark_blue, "E" : blue,
@@ -265,13 +312,18 @@ def make_animation(moves, size, csv, name):
 
     animationframes = []
 
+    # create animation
     fig = plt.figure("animation", dpi=100, figsize=(5.0,5.0))
+
+    # create first frame
     animationframes.append((plt.imshow(make_animation_frame(board.board, size, colormap)),))
 
+    # move board, and make new frame for each move
     for move in moves:
         board.move(move[0],move[1])
         animationframes.append((plt.imshow(make_animation_frame(board.board, size, colormap)),))
 
+    # finish animation
     plt.axis("off")
     im_animation = animation.ArtistAnimation(fig, animationframes, interval=500, repeat_delay=1000, blit=True)
     im_animation.save((name + ".gif"), writer="Pillow") 
@@ -279,6 +331,9 @@ def make_animation(moves, size, csv, name):
         
 
 def make_animation_frame(board, size, colormap):
+    """
+    create an animation frame to be used in animation
+    """
     image = np.zeros((size,size,3))
     for i in range(size):
         for j in range(size):
@@ -290,6 +345,7 @@ def make_animation_frame(board, size, colormap):
 
 
 def save_log(moves, name):
+    
     # create output csv file
     with open('data/logs/output'+name+'.csv', 'w') as output_file:
         csv_writer = csv.writer(output_file, delimiter=',')
