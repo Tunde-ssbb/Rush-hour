@@ -24,11 +24,12 @@ def improve_solutions(solutions, size, data, animation, log):
             short_solution = solve_inacuracy(short_solution, canidates, size, data)
             print(f"solution_number {solution_number} final length : {len(short_solution)}")
             short_solutions.append(short_solution)
-            solution_number += 1
+            
             if animation:
                 make_animation(short_solution, size, data, str(solution_number))
             if log:
                 save_log(short_solution, str(solution_number))
+            solution_number += 1
     return short_solutions
 
 def remove_useless_moves(moveset, size, data):
