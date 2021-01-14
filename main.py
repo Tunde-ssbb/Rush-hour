@@ -1,6 +1,6 @@
 from code.classes.board import Board
 from code.classes.car import Car
-from code.classes.board import make_animation, save_log
+from code.classes.board import make_animation, save_log, get_cars
 from code.algorithms.random import Random_algorithm
 from code.algorithms.depth_first import depth_first_algorithm, depth_first_main
 from code.algorithms.improve_solution import improve_solutions
@@ -36,10 +36,11 @@ if __name__ == "__main__":
     # --------------------------- Random algorithm --------------------------
     if algorithm == "random":
         # create board object and run algorithm
-        game = Board(size, data)
-        random = Random_algorithm(game, data)
-        random.run()
-        print(f"Number of moves: {len(random.game.moves)}")
+        
+        random = Random_algorithm(size, data)
+        best_solution = random.run(100)
+        
+        print(f"Number of moves: {best_solution}")
 
 
     # --------------------------- depth algorithm --------------------------
@@ -66,6 +67,31 @@ if __name__ == "__main__":
         make_animation(shortest, board_sizes[board_number], data)
         print(len(lengths)," solutions were found.")
 
+
+    elif algorithm == "check":
+        board = Board(size, data)
+
+        board.load_board()
+        board.draw_board()
+        while True:
+            move = input("Car:")
+            if move == "q":
+                break
+            step = int(input("Step: "))
+            if move not in board.cars.keys():
+                print("Invalid car")
+            elif board.validate_move(move, step):
+                board.move(move, step)
+                board.log_move(move, step)
+                board.draw_board()
+                if board.won():
+                    print("Game was won")
+                    break
+            else:
+                print("Invalid move")
+            
+        board.save_log()
+        print("Game ended")
 
     # ------------------------------------------------------------------------
     else:

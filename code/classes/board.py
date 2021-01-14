@@ -86,7 +86,7 @@ class Board():
         """
         Validate a specific move. Input: car (str:letter_id), step(int). Output: boolean.
         """
-
+        
         # find possible moves
         moves = self.find_moves()
 
@@ -114,10 +114,7 @@ class Board():
                 # swap character
                 self.board[y, x + i],self.board[y, x + step + i] = self.board[y, x + step + i], self.board[y, x + i]
                 
-        else:
-            # definition of direction
-            step = -step
-            
+        else:            
             # set the order of moving
             range_of_i = self.range_for_move_order(step, car_object.length)
 
@@ -235,9 +232,7 @@ class Board():
                 else:
                     break
 
-            # save moves in car object (flip for vertical cars)
-            if car.orientation == "V":
-                moves_forward, moves_backward = moves_backward, moves_forward
+            # save moves in car object
             car.moves = (-moves_backward, moves_forward)
 
             # add to possible moves dictionary if moves are possible
@@ -345,7 +340,7 @@ def make_animation_frame(board, size, colormap):
 
 
 def save_log(moves, name):
-    
+
     # create output csv file
     with open('data/logs/output'+name+'.csv', 'w') as output_file:
         csv_writer = csv.writer(output_file, delimiter=',')
@@ -355,3 +350,12 @@ def save_log(moves, name):
         csv_writer.writerows(moves)
 
 
+def get_cars(data):
+    with open(data, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=',')
+        
+        cars = []
+        for row in csv_reader:
+            cars.append(row['car'])
+
+    return cars
