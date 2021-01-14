@@ -7,6 +7,7 @@ class Random_algorithm:
         self.game = game
         self.game.load_board()
         self.data = data
+        
 
     def run(self):
         # repeat until game is won
@@ -21,11 +22,19 @@ class Random_algorithm:
             if 0 in possible_steps:
                 possible_steps.remove(0)
             step = random.choice(possible_steps)
-            
-            # move car and log move
-            self.game.move(car, step)
-            self.game.log_move(car, step)
+
+            if len(self.game.moves) == 0:
+                self.game.move(car, step)
+                self.game.log_move(car, step)
+            elif self.game.moves[-1][0] == car and self.game.moves[-1][1] == -step:
+                # print("skipped step")
+                pass
+            else:
+                self.game.move(car, step)
+                self.game.log_move(car, step)
 
         # save logged moves and create animation of moves
         self.game.save_log()
         # make_animation(game.moves, game.size, data)
+
+        return len(self.game.moves)

@@ -36,10 +36,16 @@ if __name__ == "__main__":
     # --------------------------- Random algorithm --------------------------
     if algorithm == "random":
         # create board object and run algorithm
-        game = Board(size, data)
-        random = Random_algorithm(game, data)
-        random.run()
-        print(f"Number of moves: {len(random.game.moves)}")
+        best_solution = float('inf')
+        for i in range(25):
+            game = Board(size, data)
+            random = Random_algorithm(game, data)
+            new_solution = random.run()
+            print(new_solution)
+            if new_solution < best_solution:
+                best_solution = new_solution
+        
+        print(f"Number of moves: {best_solution}")
 
 
     # --------------------------- depth algorithm --------------------------
