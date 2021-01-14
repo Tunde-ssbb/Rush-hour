@@ -2,7 +2,8 @@ from code.classes.board import Board
 from code.classes.car import Car
 from code.classes.board import make_animation, save_log
 from code.algorithms.random import Random_algorithm
-from code.algorithms.depth_first_first_jeroen import depth_first_algorithm, check_solution, depth_first_main, remove_useless_moves
+from code.algorithms.depth_first import depth_first_algorithm, depth_first_main
+from code.algorithms.improve_solution import improve_solutions
 from code.algorithms.breadth_first_Tünde import breadth_first_algorithm
 import random
 import sys
@@ -46,28 +47,9 @@ if __name__ == "__main__":
         number_of_attempts = int(input("Number of attempts: "))
         max_moves = int(input("Maximum number of moves: "))
         solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
+        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
 
-        if  len(solutions) > 0:
-            short_solutions = []
-            solution_number = 1
-            for solution in solutions:
-                short_solution = solution
-                old_length = len(short_solution)
-                new_length = old_length - 1
-                while old_length > new_length:
-                    #print(f"solution_number {solution_number} : length {len(short_solution)}")
-                    old_length = len(short_solution)
-                    short_solution = remove_useless_moves(short_solution, size, data)
-                    new_length = len(short_solution)
-                    #print(f"solution_number {solution_number} : to length {len(short_solution)}")
-                
-                #make_animation(short_solution, size, data, str(solution_number))
-                #save_log(short_solution, str(solution_number))
-                solution_number += 1
-                print(f"solution_number {solution_number} length : {len(short_solution)}")
-                short_solutions.append(short_solution)     
-        #print(short_solutions[0])
-        #print(sys.getrecursionlimit())
+
 
 
     # --------------------------- breadth algorithm --------------------------

@@ -167,7 +167,7 @@ class Board():
         """
 
         # fetch string representation of board
-        self.give_hash()
+        hash_board = self.give_hash()
         self.archive.add(hash_board)
 
 
