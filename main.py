@@ -37,6 +37,9 @@ if __name__ == "__main__":
     if algorithm == "random":        
         random = Random_algorithm(size, data)
         best_solution = random.run(200)
+        while best_solution > 1000:
+            best_solution = random.run(10)
+        print(random.winning_hash)
         
         print(f"Number of moves: {best_solution}")
 
@@ -49,6 +52,7 @@ if __name__ == "__main__":
         max_moves = random.run(200)
         print(f"random steps: {max_moves}")
         solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
+        print("starting optimalization")
         short_solutions = improve_solutions(solutions, size, data, animation=True, log=False)
         number_correct_solutions = 0
         for solution in short_solutions:

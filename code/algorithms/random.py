@@ -7,6 +7,7 @@ class Random_algorithm:
         self.size = size
         self.data = data
         self.best_solution = float('inf')
+        self.winning_hash = ''
 
 
     def run(self, number_of_attempts):
@@ -50,5 +51,7 @@ class Random_algorithm:
         # save logged moves and create animation of moves
         # self.game.save_log()
         # make_animation(game.moves, game.size, data)
+
+        self.winning_hash = game.give_hash()
 
         return len(game.moves)
