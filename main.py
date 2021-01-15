@@ -49,7 +49,13 @@ if __name__ == "__main__":
         max_moves = random.run(200)
         print(f"random steps: {max_moves}")
         solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
-        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
+        short_solutions = improve_solutions(solutions, size, data, animation=True, log=False)
+        number_correct_solutions = 0
+        for solution in short_solutions:
+            if len(solution) == 15:
+                number_correct_solutions += 1
+
+        print(f"{number_correct_solutions} solutions out of {number_of_attempts} are the best solution")
 
 
 
