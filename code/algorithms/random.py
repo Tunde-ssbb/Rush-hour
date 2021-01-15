@@ -55,3 +55,6 @@ class Random_algorithm:
         self.winning_hash = game.give_hash()
 
         return len(game.moves)
+
+    def get_winning_hash(self):
+        return self.winning_hash

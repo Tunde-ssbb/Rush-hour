@@ -5,6 +5,7 @@ from code.algorithms.random import Random_algorithm
 from code.algorithms.depth_first import depth_first_algorithm, depth_first_main
 from code.algorithms.improve_solution import improve_solutions
 from code.algorithms.breadth_first_Tünde import breadth_first_algorithm
+from code.heuristics.winning_comparison import winning_comparison
 import random
 import sys
 import matplotlib.pyplot as plt
@@ -39,7 +40,6 @@ if __name__ == "__main__":
         best_solution = random.run(200)
         while best_solution > 1000:
             best_solution = random.run(10)
-        print(random.winning_hash)
         
         print(f"Number of moves: {best_solution}")
 
@@ -74,10 +74,14 @@ if __name__ == "__main__":
 
 
     elif algorithm == "check":
+        random = Random_algorithm(size, data)
+        random.run(1)
+        winning_hash = random.get_winning_hash()
+        
         board = Board(size, data)
-
         board.load_board()
         board.draw_board()
+
         while True:
             move = input("Car:")
             if move == "q":
@@ -89,6 +93,10 @@ if __name__ == "__main__":
                 board.move(move, step)
                 board.log_move(move, step)
                 board.draw_board()
+                
+                score = winning_comparison(board, winning_hash)
+                print(score)
+
                 if board.won():
                     print("Game was won")
                     break
