@@ -62,6 +62,9 @@ def depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions)
     else:
         solutions = []
         while len(solutions)  < number_of_attempts :
+            if len(solutions) > 0:
+                if len(solutions[-1]) < max_moves:
+                    max_moves = len(solutions[-1])
             game = Board(size,data)
             depth_first_algorithm(game, max_moves)
             print(len(game.shortest_solution_movesets))

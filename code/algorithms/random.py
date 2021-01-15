@@ -13,6 +13,7 @@ class Random_algorithm:
         for i in range(number_of_attempts):
             game = Board(self.size, self.data)
             new_solution = self.random_moves(game)
+            # print(new_solution)
             if new_solution < self.best_solution:
                 self.best_solution = new_solution
         

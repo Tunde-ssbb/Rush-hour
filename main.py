@@ -34,11 +34,9 @@ if __name__ == "__main__":
 
 
     # --------------------------- Random algorithm --------------------------
-    if algorithm == "random":
-        # create board object and run algorithm
-        
+    if algorithm == "random":        
         random = Random_algorithm(size, data)
-        best_solution = random.run(100)
+        best_solution = random.run(200)
         
         print(f"Number of moves: {best_solution}")
 
@@ -46,7 +44,10 @@ if __name__ == "__main__":
     # --------------------------- depth algorithm --------------------------
     elif algorithm == "depth_first":
         number_of_attempts = int(input("Number of attempts: "))
-        max_moves = int(input("Maximum number of moves: "))
+        # max_moves = int(input("Maximum number of moves: "))
+        random = Random_algorithm(size, data)
+        max_moves = random.run(200)
+        print(f"random steps: {max_moves}")
         solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
         short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
 
