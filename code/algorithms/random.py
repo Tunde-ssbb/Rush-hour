@@ -14,7 +14,9 @@ class Random_algorithm:
     def run(self, number_of_attempts):
         solutions = []
         for i in range(number_of_attempts):
-            while self.length_best_solution > 1000:
+            self.length_best_solution = float('inf')
+            self.best_solution = []
+            while self.length_best_solution > 2000:
                 game = Board(self.size, self.data)
                 new_solution = self.random_moves(game)
                 # print(new_solution)

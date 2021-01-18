@@ -15,7 +15,6 @@ def improve_solutions(solutions, size, data, animation, log):
                 old_length = len(short_solution)
                 saperated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, 10, size, data)
                 short_solution = improve_cut_solution(saperated_moveset, hashes, size, data) + last_moves
-                print(len(short_solution))
                 new_length = len(short_solution)
 
             old_length = len(short_solution)
@@ -34,7 +33,7 @@ def improve_solutions(solutions, size, data, animation, log):
                 canidates = check_for_possible_inacuracy(short_solution, size, data)
                 short_solution = solve_inacuracy(short_solution, canidates, size, data)
                 new_length = len(short_solution)
-                print(new_length)
+                
             
             print(f"solution_number {solution_number} final length : {len(short_solution)}")
             short_solutions.append(short_solution)
@@ -219,23 +218,3 @@ def improve_cut_solution(saperated_moveset, hashes, size, data):
         moveset = moveset + chunk
 
     return moveset
-
-# not used
-def sum_of_moves(moveset, size, data):
-    ##a lot of work just te get the cars##
-    game = Board(size,data)
-    cars = game.cars
-    total_moves = {}
-
-    # format: [final position, total in negative direction, total in positive direction]
-    for car in cars:
-        total_moves[car] = [0,0,0]
-
-    for move in moveset:
-        total_moves[move[0]][0] +=  move[1]
-        if move[1] < 0:
-            total_moves[move[0]][1] +=  move[1]
-        else:
-            total_moves[move[0]][2] +=  move[1]
-    
-    return total_moves
