@@ -10,6 +10,9 @@ import random
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
+import time
+
+
 
 if __name__ == "__main__":
     # dictionary of board numbers with corresponding sizes
@@ -42,13 +45,15 @@ if __name__ == "__main__":
         solutions = random.run(number_of_attempts, max_moves)
         print(random.length_best_solution)
         print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
-        number_correct_solutions = 0
-        for solution in short_solutions:
-            if len(solution) == 15:
-                number_correct_solutions += 1
+        short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
 
-        print(f"{number_correct_solutions} solutions out of {number_of_attempts} are the best solution")
+    	
+        #number_correct_solutions = 0
+        #for solution in short_solutions:
+        #    if len(solution) == 15:
+        #        number_correct_solutions += 1
+
+        #print(f"{number_correct_solutions} solutions out of {number_of_attempts} are the best solution")
         
         
         # print(f"Number of moves: {best_solution}")
@@ -66,12 +71,14 @@ if __name__ == "__main__":
         solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
         print("starting optimalization")
         short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
+        """
         number_correct_solutions = 0
         for solution in short_solutions:
             if len(solution) == 15:
                 number_correct_solutions += 1
 
         print(f"{number_correct_solutions} solutions out of {number_of_attempts} are the best solution")
+        """
 
 
 
@@ -84,6 +91,19 @@ if __name__ == "__main__":
         make_animation(shortest, board_sizes[board_number], data)
         print(len(lengths)," solutions were found.")
 
+    elif algorithm == "test_improve_solution":
+        number_of_attempts = 1
+        random = Random_algorithm(size, data)
+
+        start = time.time()
+        solutions = random.run(number_of_attempts)
+        end = time.time()
+        print(f"time to find a solution: {round(end - start,2)} seconds")
+        print(f"lenght solution: {len(solutions[0])}")
+        start = time.time()
+        improve_solutions(solutions, size, data, animation=False, log=True)
+        end = time.time()
+        print(f"time to optimize solution: {round(end - start,2)} seconds")
 
     elif algorithm == "check":
         random = Random_algorithm(size, data)

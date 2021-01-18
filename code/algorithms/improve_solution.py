@@ -10,6 +10,16 @@ def improve_solutions(solutions, size, data, animation, log):
             short_solution = solution
             old_length = len(short_solution)
             new_length = old_length - 1
+
+            while old_length > new_length:
+                old_length = len(short_solution)
+                saperated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, 10, size, data)
+                short_solution = improve_cut_solution(saperated_moveset, hashes, size, data) + last_moves
+                print(len(short_solution))
+                new_length = len(short_solution)
+
+            old_length = len(short_solution)
+            new_length = old_length - 1
             while old_length > new_length:
                 old_length = len(short_solution)
                 short_solution = remove_useless_moves(short_solution, size, data)
@@ -17,11 +27,15 @@ def improve_solutions(solutions, size, data, animation, log):
             
             
             print(f"solution_number {solution_number} length : {len(short_solution)}")
-            #print(f"solution {solution_number}: {short_solution}")
-            #print(f"sum_of_moves = {sum_of_moves(short_solution, size, data)}")
-            canidates = check_for_possible_inacuracy(short_solution, size, data)
-            #print(f"canidates = {canidates}")
-            short_solution = solve_inacuracy(short_solution, canidates, size, data)
+            old_length = len(short_solution)
+            new_length = old_length - 1
+            while old_length > new_length:
+                old_length = len(short_solution)
+                canidates = check_for_possible_inacuracy(short_solution, size, data)
+                short_solution = solve_inacuracy(short_solution, canidates, size, data)
+                new_length = len(short_solution)
+                print(new_length)
+            
             print(f"solution_number {solution_number} final length : {len(short_solution)}")
             short_solutions.append(short_solution)
             
@@ -32,33 +46,40 @@ def improve_solutions(solutions, size, data, animation, log):
             solution_number += 1
     return short_solutions
 
-def remove_useless_moves(moveset, size, data):
+def remove_useless_moves(moveset, size, data, start_hash=None, end_hash=None):
     
-    moveset = combine(moveset, size, data, method="remove")
+    moveset = combine(moveset, size, data, method="remove", start_hash=start_hash, end_hash=end_hash)
     moveset = remove0moves(moveset)
-    moveset = combine(moveset, size, data, method="left")
+    moveset = combine(moveset, size, data, method="left", start_hash=start_hash, end_hash=end_hash)
     moveset = remove0moves(moveset)
-    moveset = combine(moveset, size, data, method="right")
+    moveset = combine(moveset, size, data, method="right", start_hash=start_hash, end_hash=end_hash)
     moveset = remove0moves(moveset)
-    moveset = combine(moveset, size, data, method="single")
+    moveset = combine(moveset, size, data, method="single", start_hash=start_hash, end_hash=end_hash)
     moveset = remove0moves(moveset)
    
     return moveset
 
 def remove0moves(moveset):
+    """
+    remove moves that take a step of 0 
+    """
     for i in range(len(moveset) - 1, -1, -1):
         if moveset[i][1] == 0:
             del moveset[i]
     return moveset
 
-def combine(moveset, size, data, method):
+def combine(moveset, size, data, method, start_hash=None, end_hash=None):
     for i in range(len(moveset)):
         car = moveset[i][0]
         if method == "single":
             test_moveset = copy.deepcopy(moveset)
-            test_moveset[i][1] = 0  
-            if check_solution(test_moveset, size, data):
-                moveset = test_moveset[:]
+            test_moveset[i][1] = 0
+            if start_hash == None:  
+                if check_solution(test_moveset, size, data):
+                    moveset = test_moveset[:]
+            else:
+                if check_solution_to_hash(test_moveset, size, data, start_hash, end_hash):
+                    moveset = test_moveset[:]
         else:
             for j in range(i+1,len(moveset)):
                 if car == moveset[j][0]:
@@ -71,10 +92,14 @@ def combine(moveset, size, data, method):
                         test_moveset[j][1] = moveset[i][1] + moveset[j][1]
                     elif method == "remove":
                         test_moveset[i][1] = 0
-                        test_moveset[j][1] = moveset[i][1] + moveset[j][1]
-    
-                    if check_solution(test_moveset, size, data):
-                        moveset = test_moveset[:]
+                        test_moveset[j][1] = 0
+
+                    if start_hash == None:
+                        if check_solution(test_moveset, size, data):
+                            moveset = test_moveset[:]
+                    else:
+                        if check_solution_to_hash(test_moveset, size, data, start_hash, end_hash):
+                            moveset = test_moveset[:]
     return moveset
 
 # returns True if the given moeset solves the board
@@ -85,6 +110,17 @@ def check_solution(moveset, size, data):
             return False
         game.move(move[0],move[1])
     return game.won()
+
+def check_solution_to_hash(moveset, size, data, start_hash, end_hash):
+    game = Board(size,data, hash=start_hash)
+    for move in moveset:
+        if not game.validate_move(move[0],move[1]):
+            return False
+        game.move(move[0],move[1])
+
+    result = game.give_hash()
+
+    return result == end_hash
 
 def check_for_possible_inacuracy(moveset, size, data):
     game = Board(size,data)
@@ -151,6 +187,39 @@ def solve_inacuracy(moveset, canidates, size, data):
 
     return moveset
 
+def cut_moveset_and_get_board_hashes(moveset, chunck_size , size, data):
+    hashes = []
+    cut_moveset = []
+    moves = []
+    game = Board(size,data)
+    hashes.append(game.give_hash())
+    move_number = 0
+
+    for move in moveset:
+        game.move(move[0], move[1])
+        moves.append(move)
+        move_number += 1
+        if move_number % chunck_size == 0:
+            hashes.append(game.give_hash())
+            cut_moveset.append(moves)
+            moves = []
+
+    last_moves = moves
+
+    return cut_moveset, hashes, last_moves
+
+def improve_cut_solution(saperated_moveset, hashes, size, data):
+    for i in range(len(saperated_moveset)):
+        start_hash = hashes[i]
+        end_hash = hashes[i+1]
+        saperated_moveset[i] = remove_useless_moves(saperated_moveset[i], size, data, start_hash=start_hash, end_hash=end_hash)
+    #print(saperated_moveset)
+    moveset = []
+    for chunk in saperated_moveset:
+        moveset = moveset + chunk
+
+    return moveset
+
 # not used
 def sum_of_moves(moveset, size, data):
     ##a lot of work just te get the cars##
@@ -170,4 +239,3 @@ def sum_of_moves(moveset, size, data):
             total_moves[move[0]][2] +=  move[1]
     
     return total_moves
-

@@ -9,7 +9,7 @@ from code.classes.car import Car
 
 class Board():
 
-    def __init__(self, size, csv):
+    def __init__(self, size, csv, hash=None):
         self.size = size
         self.cars = {}
         self.moves = []
@@ -17,7 +17,11 @@ class Board():
         self.archive = set()
         self.load_cars_from_csv(csv)
         self.board = np.full((size, size), "#")
-        self.load_board()
+        if hash == None:
+            self.load_board()
+        else:
+            self.load_board_from_hash(hash)
+
 
     def load_board(self):
         """
