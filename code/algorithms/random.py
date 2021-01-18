@@ -11,12 +11,12 @@ class Random_algorithm:
         self.best_solution = []
         self.winning_hash = ''
 
-    def run(self, number_of_attempts):
+    def run(self, number_of_attempts, max_moves):
         solutions = []
         for i in range(number_of_attempts):
             self.length_best_solution = float('inf')
             self.best_solution = []
-            while self.length_best_solution > 2000:
+            while self.length_best_solution > max_moves:
                 game = Board(self.size, self.data)
                 new_solution = self.random_moves(game)
                 # print(new_solution)
