@@ -1,4 +1,5 @@
 from code.classes.board import Board, make_animation
+import copy
 import random
 
 class Random_algorithm:
@@ -6,19 +7,23 @@ class Random_algorithm:
     def __init__(self, size, data):
         self.size = size
         self.data = data
-        self.best_solution = float('inf')
+        self.length_best_solution = float('inf')
+        self.best_solution = []
         self.winning_hash = ''
 
-
     def run(self, number_of_attempts):
+        solutions = []
         for i in range(number_of_attempts):
-            game = Board(self.size, self.data)
-            new_solution = self.random_moves(game)
-            # print(new_solution)
-            if new_solution < self.best_solution:
-                self.best_solution = new_solution
-        
-        return self.best_solution
+            while self.length_best_solution > 1000:
+                game = Board(self.size, self.data)
+                new_solution = self.random_moves(game)
+                # print(new_solution)
+                if len(new_solution) < self.length_best_solution:
+                    self.length_best_solution = len(new_solution)
+
+            self.best_solution = copy.deepcopy(new_solution)
+            solutions.append(self.best_solution)
+        return solutions
 
 
     def random_moves(self, game):
@@ -45,7 +50,7 @@ class Random_algorithm:
                 game.move(car, step)
                 game.log_move(car, step)
 
-            if len(game.moves) >= self.best_solution:
+            if len(game.moves) >= self.length_best_solution:
                 break
 
         # save logged moves and create animation of moves
@@ -54,7 +59,7 @@ class Random_algorithm:
 
         self.winning_hash = game.give_hash()
 
-        return len(game.moves)
+        return game.moves
 
     def get_winning_hash(self):
         return self.winning_hash

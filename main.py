@@ -35,13 +35,22 @@ if __name__ == "__main__":
 
 
     # --------------------------- Random algorithm --------------------------
-    if algorithm == "random":        
+    if algorithm == "random":     
+        number_of_attempts = int(input("Number of attempts: "))   
         random = Random_algorithm(size, data)
-        best_solution = random.run(200)
-        while best_solution > 1000:
-            best_solution = random.run(10)
+        solutions = random.run(number_of_attempts)
+        print(random.length_best_solution)
+        print("starting optimalization")
+        short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
+        number_correct_solutions = 0
+        for solution in short_solutions:
+            if len(solution) == 15:
+                number_correct_solutions += 1
+
+        print(f"{number_correct_solutions} solutions out of {number_of_attempts} are the best solution")
         
-        print(f"Number of moves: {best_solution}")
+        
+        # print(f"Number of moves: {best_solution}")
 
 
     # --------------------------- depth algorithm --------------------------
@@ -50,10 +59,12 @@ if __name__ == "__main__":
         # max_moves = int(input("Maximum number of moves: "))
         random = Random_algorithm(size, data)
         max_moves = random.run(200)
+        while max_moves > 1000:
+            max_moves = random.run(10)
         print(f"random steps: {max_moves}")
         solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
         print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=True, log=False)
+        short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
         number_correct_solutions = 0
         for solution in short_solutions:
             if len(solution) == 15:

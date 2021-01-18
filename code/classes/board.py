@@ -68,7 +68,7 @@ class Board():
 
             # create object for each car in file and store in dictionary
             for row in car_reader:
-                car_object = Car(row['car'], row['orientation'], int(row['length']), int(row['row']), int(row['col']))
+                car_object = Car(row['car'], row['orientation'], int(row['length']), int(row['col']), int(row['row']))
                 self.cars.update({row['car']: car_object})
 
     def draw_board(self):
@@ -300,7 +300,20 @@ def make_animation(moves, size, csv, name):
             "I" : dark_blue, "J" : orange, "K" : light_blue, "L" : grey,
             "M" : blue, "N" : yellow, "O" : light_blue, "P" : orange,
             "Q" : orange, "R" : dark_blue, "S" : yellow, "T" : blue,
-            "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "Z" : grey}
+            "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "Z" : grey},
+
+        "./data/gameboards/Rushhour12x12_7.csv" : { "X" : red, "A" : blue, "B" : light_blue,
+            "C" : dark_yellow, "D" : dark_blue, "E" : orange,
+            "F" : blue, "G" : light_blue, "H" : dark_blue,
+            "I" : dark_blue, "J" : orange, "K" : light_blue, "L" : grey,
+            "M" : blue, "N" : yellow, "O" : light_blue, "P" : orange,
+            "Q" : orange, "R" : dark_blue, "S" : yellow, "T" : blue,
+            "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "AA" : grey,
+            "AB" : blue, "AC" : light_blue, "AD" : dark_yellow, "AE" : dark_blue,
+            "AF" : orange, "AG" : blue, "AH" : light_blue, "AI" : grey,
+            "AJ" : dark_blue, "AK" : dark_yellow, "AL" : purple, "AM" : yellow,
+            "AN" : orange, "AO" : purple, "AP" : dark_yellow, "AQ" : orange, 
+            "AR" : light_blue, "AS" : orange}
         }
         
     colormap = colormaps[csv]
