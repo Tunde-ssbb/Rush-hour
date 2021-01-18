@@ -13,6 +13,11 @@ def depth_first_algorithm(game, max_moves):
         if len(moves) < len(game.shortest_solution_movesets) or game.shortest_solution_movesets == []:
             game.log_shortest_solution_movesets(moves)
 
+    # dynamically cut off depth search at the shortest solution length
+    if len(game.shortest_solution_movesets) > 0:
+        if len(game.shortest_solution_movesets[-1]) < max_moves:
+                    max_moves = len(game.shortest_solution_movesets[-1])
+
     # if the new branch is in the archive ignore the branch
     elif game.give_hash() not in game.archive and len(game.moves) < max_moves :
         # save the current board to be able to go back
@@ -56,18 +61,15 @@ def depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions)
         for n in range(number_of_attempts):
             game = Board(size,data)
             depth_first_algorithm(game, max_moves)
-            print(len(game.shortest_solution_movesets))
+            # print(len(game.shortest_solution_movesets))
             if len(game.shortest_solution_movesets) != 0:
                 solutions.append(game.shortest_solution_movesets)
     else:
         solutions = []
         while len(solutions)  < number_of_attempts :
-            if len(solutions) > 0:
-                if len(solutions[-1]) < max_moves:
-                    max_moves = len(solutions[-1])
             game = Board(size,data)
             depth_first_algorithm(game, max_moves)
-            print(len(game.shortest_solution_movesets))
+            # print(f"solutions found: {len(game.shortest_solution_movesets)}")
             if len(game.shortest_solution_movesets) != 0:
                 solutions.append(game.shortest_solution_movesets)
 
