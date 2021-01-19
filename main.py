@@ -45,7 +45,7 @@ if __name__ == "__main__":
         solutions = random.run(number_of_attempts, max_moves)
         print(random.length_best_solution)
         print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
+        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
 
     	
         #number_correct_solutions = 0
@@ -92,20 +92,52 @@ if __name__ == "__main__":
         print(len(lengths)," solutions were found.")
 
     elif algorithm == "test_improve_solution":
-        number_of_attempts = 1
+        number_of_attempts = 1000
+        max_moves = 500
         random = Random_algorithm(size, data)
-        max_moves = 1000
 
         start = time.time()
+    
+        start = begin = time.time()
         solutions = random.run(number_of_attempts, max_moves)
         end = time.time()
         print(f"time to find a solution: {round(end - start,2)} seconds")
-        print(f"lenght solution: {len(solutions[0])}")
+
         start = time.time()
-        improve_solutions(solutions, size, data, animation=True, log=True)
+        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
         end = time.time()
         print(f"time to optimize solution: {round(end - start,2)} seconds")
+        print(f"Total time: {round(end - begin,2)} seconds")
 
+        
+        results = []
+        for solution in short_solutions:
+            results.append(len(solution))
+        
+        lengths = []
+        for result in results:
+            if result not in lengths:
+                lengths.append(result)
+
+        lengths.sort()
+        heights = [0]* len(lengths)
+        for i in range(len(lengths)):
+            for result in results:
+                if result == lengths[i]:
+                    heights[i] += 1
+            
+
+
+        plt.figure(1)
+        plt.bar(lengths,heights)
+        plt.xlabel("number of moves")
+        plt.xticks(lengths)
+        plt.savefig(f'10solutions_of_board{board_number}.png')
+        
+        
+
+
+        
     elif algorithm == "check":
         random = Random_algorithm(size, data)
         random.run(1)
