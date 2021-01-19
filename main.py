@@ -45,7 +45,7 @@ if __name__ == "__main__":
         solutions = random.run(number_of_attempts, max_moves)
         print(random.length_best_solution)
         print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
+        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
 
     	
         #number_correct_solutions = 0
@@ -95,6 +95,8 @@ if __name__ == "__main__":
         number_of_attempts = 250
         max_moves = 2000
         random = Random_algorithm(size, data)
+
+        start = time.time()
     
         start = begin = time.time()
         solutions = random.run(number_of_attempts, max_moves)
