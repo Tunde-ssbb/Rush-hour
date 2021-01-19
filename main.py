@@ -92,8 +92,8 @@ if __name__ == "__main__":
         print(len(lengths)," solutions were found.")
 
     elif algorithm == "test_improve_solution":
-        number_of_attempts = 1
-        max_moves = 4000
+        number_of_attempts = 250
+        max_moves = 2000
         random = Random_algorithm(size, data)
     
         start = begin = time.time()
@@ -130,7 +130,7 @@ if __name__ == "__main__":
         plt.bar(lengths,heights)
         plt.xlabel("number of moves")
         plt.xticks(lengths)
-        plt.savefig(f'10solutions_of_board{board_number}.png')
+        plt.savefig(f'1000solutions_of_board{board_number}.png')
         
         
 
