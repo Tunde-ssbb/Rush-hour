@@ -13,8 +13,8 @@ def improve_solutions(solutions, size, data, animation, log):
 
             while old_length > new_length:
                 old_length = len(short_solution)
-                saperated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, 50, size, data)
-                short_solution = improve_cut_solution(saperated_moveset, hashes, size, data) + last_moves
+                separated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, 50, size, data)
+                short_solution = improve_cut_solution(separated_moveset, hashes, size, data) + last_moves
                 new_length = len(short_solution)
                 print(len(short_solution))
 
@@ -24,6 +24,7 @@ def improve_solutions(solutions, size, data, animation, log):
                 old_length = len(short_solution)
                 short_solution = remove_useless_moves(short_solution, size, data)
                 new_length = len(short_solution)
+                
             
             
             print(f"solution_number {solution_number} length : {len(short_solution)}")
@@ -34,6 +35,7 @@ def improve_solutions(solutions, size, data, animation, log):
                 canidates = check_for_possible_inacuracy(short_solution, size, data)
                 short_solution = solve_inacuracy(short_solution, canidates, size, data)
                 new_length = len(short_solution)
+                print(len(short_solution))
                 
             
             print(f"solution_number {solution_number} final length : {len(short_solution)}")
@@ -208,14 +210,14 @@ def cut_moveset_and_get_board_hashes(moveset, chunck_size , size, data):
 
     return cut_moveset, hashes, last_moves
 
-def improve_cut_solution(saperated_moveset, hashes, size, data):
-    for i in range(len(saperated_moveset)):
+def improve_cut_solution(separated_moveset, hashes, size, data):
+    for i in range(len(separated_moveset)):
         start_hash = hashes[i]
         end_hash = hashes[i+1]
-        saperated_moveset[i] = remove_useless_moves(saperated_moveset[i], size, data, start_hash=start_hash, end_hash=end_hash)
-    #print(saperated_moveset)
+        separated_moveset[i] = remove_useless_moves(separated_moveset[i], size, data, start_hash=start_hash, end_hash=end_hash)
+    #print(separated_moveset)
     moveset = []
-    for chunk in saperated_moveset:
+    for chunk in separated_moveset:
         moveset = moveset + chunk
 
     return moveset
