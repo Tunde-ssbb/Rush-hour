@@ -13,9 +13,10 @@ def improve_solutions(solutions, size, data, animation, log):
 
             while old_length > new_length:
                 old_length = len(short_solution)
-                saperated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, 10, size, data)
+                saperated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, 50, size, data)
                 short_solution = improve_cut_solution(saperated_moveset, hashes, size, data) + last_moves
                 new_length = len(short_solution)
+                print(len(short_solution))
 
             old_length = len(short_solution)
             new_length = old_length - 1

@@ -14,6 +14,7 @@ class Random_algorithm:
     def run(self, number_of_attempts, max_moves):
         solutions = []
         for i in range(number_of_attempts):
+            print(len(solutions))
             self.length_best_solution = float('inf')
             self.best_solution = []
             while self.length_best_solution > max_moves:
