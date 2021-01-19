@@ -94,14 +94,15 @@ if __name__ == "__main__":
     elif algorithm == "test_improve_solution":
         number_of_attempts = 1
         random = Random_algorithm(size, data)
+        max_moves = 1000
 
         start = time.time()
-        solutions = random.run(number_of_attempts)
+        solutions = random.run(number_of_attempts, max_moves)
         end = time.time()
         print(f"time to find a solution: {round(end - start,2)} seconds")
         print(f"lenght solution: {len(solutions[0])}")
         start = time.time()
-        improve_solutions(solutions, size, data, animation=False, log=True)
+        improve_solutions(solutions, size, data, animation=True, log=True)
         end = time.time()
         print(f"time to optimize solution: {round(end - start,2)} seconds")
 
