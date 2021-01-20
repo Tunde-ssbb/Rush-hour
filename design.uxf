@@ -1,20 +1,28 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>128</x><y>187</y><w>190</w><h>310</h></coordinates><panel_attributes>Game
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>18</x><y>187</y><w>400</w><h>350</h></coordinates><panel_attributes>Board
 --
 size: int
 cars: dict{car.letter_id:car}
 board: np.array
-archive: Archive
-current_node: Node
-score:int
-possible_moves:set(car.letter_id)
+archive: set(hashes:str)
+moves: [car_id:str, step:int]
+shortest_solution_movesets: [car_id:str, step:int]
 --
 load_board(self): None
-load_cars(self, source_file): None
+load_board_from_hash(self, hash): None
+load_cars_from_csv(self, source_file): None
 draw_board(self): str
 validate_move(self, car:Car, step:int): Bool
 move(self, car:Car, step:int): None
 won(self): Bool
-archive_board(self):
+log_move(self, car:Car, step:int): None
+log_shortest_solution_movesets(self, moveset:[car_id:str, step:int]): None
+step_back(self): None
+save_log(self): None
+archive_board(self): None
+give_hash(self): hash:str
+range_for_move_order(self, step:int, length:int): [int]
+find_moves(self): dict{car_id:str : [moves_back:int, moves_forward:int]}
+
 
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>458</x><y>187</y><w>180</w><h>200</h></coordinates><panel_attributes>Car
 --
@@ -23,21 +31,7 @@ orientation: str
 length: int
 x: int
 y: int
-moves_forward:int
-moves_backward:int
+moves
 --
-move(step:int): None</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>308</x><y>187</y><w>170</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>130</x><y>10</y><w>130</w><h>150</h></coordinates><panel_attributes>Node
---
-hash:str
-score:int
-id:int
-previous: set(Nodes)
-next:set(Nodes)
---
-methods</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>350</x><y>2</y><w>130</w><h>150</h></coordinates><panel_attributes>Archive
---
-Nodes:set(Nodes)
---
-create_node()
-;</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+move(step:int): None</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>408</x><y>187</y><w>70</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes><additional_attributes>10;10;50;10</additional_attributes></element></diagram>
