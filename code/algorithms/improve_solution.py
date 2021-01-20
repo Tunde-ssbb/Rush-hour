@@ -1,4 +1,5 @@
-from code.classes.board import Board, save_log, make_animation
+from code.classes.board import Board
+from code.util import save_log, make_animation
 import random
 import copy
 

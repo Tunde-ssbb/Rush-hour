@@ -6,6 +6,7 @@ board: np.array
 archive: set(hashes:str)
 moves: [car_id:str, step:int]
 shortest_solution_movesets: [car_id:str, step:int]
+(optional) hash: str
 --
 load_board(self): None
 load_board_from_hash(self, hash): None
