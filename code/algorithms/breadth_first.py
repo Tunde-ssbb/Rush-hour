@@ -1,7 +1,8 @@
 from code.classes.board import Board
-from code.heuristics.blocking_cars import calculate_score
+from code.heuristics.blocking_cars import blocking_cars_calculate_score
 import queue
 import copy
+import time
 
 def breadth_first_algorithm(game, depth = None, origin = "main"):
     """
@@ -14,7 +15,7 @@ def breadth_first_algorithm(game, depth = None, origin = "main"):
     state_queue.put([game.give_hash(),[]])
     cur_depth = 0
     if origin == "population":
-        boards_and_scores = []
+        scores_and_boards = []
     # keep searching as long as there are states to be examined
     while not state_queue.empty() :
         # get next state
@@ -29,7 +30,7 @@ def breadth_first_algorithm(game, depth = None, origin = "main"):
             cur_depth = len(moves)
         
         if origin == "population":
-            boards_and_scores.append((game.give_hash(), blocking_cars_calculate_score(game, 3)))
+            scores_and_boards.append(( blocking_cars_calculate_score(game, 3), game.give_hash()))
 
         # check if game was won
         if game.won():
@@ -71,7 +72,7 @@ def breadth_first_algorithm(game, depth = None, origin = "main"):
     if origin == "main":
         return game.shortest_solution_movesets
     elif origin == "population":
-        return boards_and_scores, game.shortest_solution_movesets
+        return scores_and_boards, game.shortest_solution_movesets
 
 
 def breadth_first_population(game, n_gens,  layers_per_gen, n_survivors):
@@ -82,29 +83,54 @@ def breadth_first_population(game, n_gens,  layers_per_gen, n_survivors):
     """
 
     # initiate first survivor and archive survivors
-    survivors = [(game.give_hash(), (blocking_cars_calculate_score(game, 3)))]
+    survivors = [game.give_hash()]
+    best_score = blocking_cars_calculate_score(game, 3)
     gen = 0
     archive = set()
     while gen < n_gens:
         boards = []
         # examine each survivor
         for survivor in survivors:
-            print(survivor[1])
-            game.load_board_from_hash(survivor[0])
+            #print(survivor[1])
+            game.load_board_from_hash(survivor)
             # search board
-            boards_and_scores, shortest_sol = breadth_first_algorithm(game, layers_per_gen, origin = "population")
+            scores_and_boards, shortest_sol = breadth_first_algorithm(game, layers_per_gen, origin = "population")
+            
             if len(shortest_sol):
                 print(f"a solution of {len(shortest_sol)} moves was found: {shortest_sol}")
             # add to searched boards
-            boards.extend(boards_and_scores)
+            boards.extend(scores_and_boards)
+        #print("scores and boards", len(boards))
         # sort boards to score and take best boards
-        sorted_boards = sorted(boards)
-        sorted_boards = [board for board in sorted_boards if board[0] not in archive]
-        survivors = sorted_boards[:n_survivors]
-        for survivor in survivors:
-            archive.add(survivor[0])
+        sorted_scores_and_boards = sorted(boards)
+        sorted_scores_and_boards = [board for board in sorted_scores_and_boards if board[1] not in archive]
+        #print("sorted_boards", sorted_scores_and_boards[:3])
+        if len(sorted_scores_and_boards):
+            new_sorted_scores, new_sorted_boards = zip(*sorted_scores_and_boards)
+        
+            if new_sorted_scores[0] <= best_score:
+                survivors, best_score, old_boards = new_sorted_boards[:n_survivors], new_sorted_scores[0], sorted_scores_and_boards[n_survivors:]
+                print(f"searched gen {gen}")
+                print(f"best score: {best_score}")
+            else:
+                print("generation did not improve, trying again")
+                old_boards = [board for board in old_boards if board[1] not in archive]
+                survivors = tuple([board[1] for board in old_boards[:n_survivors]])
+                old_boards = old_boards[n_survivors:]
+                gen -= 1
+        else:
+            #print("generation got stuck, trying again")
+            #print(old_boards[:2])
+            old_boards = [board for board in old_boards if board[1] not in archive]
+            survivors = tuple([board[1] for board in old_boards[:n_survivors]])
+            old_boards = old_boards[n_survivors:]
+            gen -= 1
+            
 
-        print(f"searched gen {gen}")
+        for survivor in survivors:
+            archive.add(survivor)
+        #time.sleep(1)
+        #print("surviving:", survivors)
         gen += 1
 
 
