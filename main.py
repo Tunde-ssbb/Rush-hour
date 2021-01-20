@@ -4,8 +4,9 @@ from code.classes.board import make_animation, save_log, get_cars
 from code.algorithms.random import Random_algorithm
 from code.algorithms.depth_first import depth_first_algorithm, depth_first_main
 from code.algorithms.improve_solution import improve_solutions
-from code.algorithms.breadth_first_Tünde import breadth_first_algorithm
+from code.algorithms.breadth_first import breadth_first_algorithm
 from code.heuristics.winning_comparison import winning_comparison
+from code.heuristics.test_heuristic import test_heuristic
 import random
 import sys
 import matplotlib.pyplot as plt
@@ -133,8 +134,11 @@ if __name__ == "__main__":
         plt.xlabel("number of moves")
         plt.xticks(lengths)
         plt.savefig(f'100solutions_of_board{board_number}.png')
-        
-        
+     
+    elif algorithm == "test_heuristic":
+        game = Board(size, data)
+        heuristic = "blocking_cars"
+        test_heuristic(game, heuristic, size, data) 
 
 
         
