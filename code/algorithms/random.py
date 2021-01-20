@@ -1,4 +1,4 @@
-from code.classes.board import Board, make_animation
+from code.classes.board import Board
 import copy
 import random
 

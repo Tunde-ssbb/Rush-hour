@@ -1,6 +1,6 @@
 from code.classes.board import Board
 from code.classes.car import Car
-from code.classes.board import make_animation, save_log, get_cars
+from code.util import make_animation, save_log, get_cars
 from code.algorithms.random import Random_algorithm
 from code.algorithms.depth_first import depth_first_algorithm, depth_first_main
 from code.algorithms.improve_solution import improve_solutions
@@ -47,18 +47,6 @@ if __name__ == "__main__":
         print("starting optimalization")
         short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
 
-    	
-        #number_correct_solutions = 0
-        #for solution in short_solutions:
-        #    if len(solution) == 15:
-        #        number_correct_solutions += 1
-
-        #print(f"{number_correct_solutions} solutions out of {number_of_attempts} are the best solution")
-        
-        
-        # print(f"Number of moves: {best_solution}")
-
-
     # --------------------------- depth algorithm --------------------------
     elif algorithm == "depth_first":
         number_of_attempts = int(input("Number of attempts: "))
@@ -91,6 +79,8 @@ if __name__ == "__main__":
         make_animation(shortest, board_sizes[board_number], data)
         print(len(lengths)," solutions were found.")
 
+
+    # ------------------------------------------------------------------------
     elif algorithm == "test_improve_solution":
         number_of_attempts = 100
         max_moves = 2000
@@ -133,11 +123,9 @@ if __name__ == "__main__":
         plt.xlabel("number of moves")
         plt.xticks(lengths)
         plt.savefig(f'100solutions_of_board{board_number}.png')
-        
-        
 
 
-        
+    # ------------------------------------------------------------------------        
     elif algorithm == "check":
         random = Random_algorithm(size, data)
         random.run(1)
