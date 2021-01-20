@@ -1,5 +1,5 @@
 from code.classes.board import Board
-from code.heuristics.blocking_cars import calculate_score
+from code.heuristics.blocking_cars import blocking_cars_calculate_score
 import queue
 import copy
 
