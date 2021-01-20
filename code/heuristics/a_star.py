@@ -8,7 +8,7 @@ def a_star_heuristic(game):
             distance_to_exit += 1
             
             target_car = game.cars[place]
-            if board[red_car.y - 1, target_car.x] != '#' or board[red_car.y + target_car.length, target_car.x] != '#':
+            if game.board[red_car.y - 1, target_car.x] != '#' or game.board[red_car.y + target_car.length, target_car.x] != '#':
                 distance_to_exit += 1
 
     a_star = len(game.moves) + distance_to_exit
