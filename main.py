@@ -6,6 +6,7 @@ from code.algorithms.depth_first import depth_first_algorithm, depth_first_main
 from code.algorithms.improve_solution import improve_solutions
 from code.algorithms.breadth_first import breadth_first_algorithm
 from code.heuristics.winning_comparison import winning_comparison
+from code.heuristics.a_star import a_star_heuristic
 from code.heuristics.test_heuristic import test_heuristic
 import random
 import sys
@@ -127,12 +128,15 @@ if __name__ == "__main__":
      
     elif algorithm == "test_heuristic":
         game = Board(size, data)
-        heuristic = "blocking_cars"
+        heuristic = "a_star"
         test_heuristic(game, heuristic, size, data) 
 
 
     # ------------------------------------------------------------------------        
     elif algorithm == "check":
+        # random = Random_algorithm(size, data)
+        # random.run(1)
+        # winning_hash = random.get_winning_hash()
         
         board = Board(size, data)
         board.load_board()
@@ -150,6 +154,8 @@ if __name__ == "__main__":
                 board.log_move(move, step)
                 board.draw_board()
                 
+                score = a_star_heuristic(board)
+                print(score)
 
                 if board.won():
                     print("Game was won")
