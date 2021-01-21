@@ -128,9 +128,19 @@ if __name__ == "__main__":
      
     elif algorithm == "test_heuristic":
         game = Board(size, data)
+        #heuristic = "blocking_cars"
+        #heuristic = "winning_comparison"
         heuristic = "a_star"
-        test_heuristic(game, heuristic, size, data) 
+        scores = test_heuristic(game, heuristic, size, data, best=False)
+        
+        for score in scores:
+            print(score)
 
+        game = Board(size, data)
+        scores = test_heuristic(game, heuristic, size, data, best=True)
+        
+        for score in scores:
+            print(score)
 
     # ------------------------------------------------------------------------        
     elif algorithm == "check":
