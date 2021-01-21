@@ -64,18 +64,18 @@ def make_animation(moves, size, csv, name):
             "Q" : orange, "R" : dark_blue, "S" : yellow, "T" : blue,
             "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "Z" : grey},
 
-        "./data/gameboards/Rushhour12x12_7.csv" : { "X" : red, "A" : blue, "B" : light_blue,
-            "C" : dark_yellow, "D" : dark_blue, "E" : orange,
-            "F" : blue, "G" : light_blue, "H" : dark_blue,
-            "I" : dark_blue, "J" : orange, "K" : light_blue, "L" : grey,
-            "M" : blue, "N" : yellow, "O" : light_blue, "P" : orange,
-            "Q" : orange, "R" : dark_blue, "S" : yellow, "T" : blue,
-            "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "a" : grey,
-            "b" : blue, "c" : light_blue, "d" : dark_yellow, "e" : dark_blue,
-            "f" : orange, "g" : blue, "h" : light_blue, "i" : grey,
-            "j" : dark_blue, "k" : dark_yellow, "l" : purple, "m" : yellow,
-            "n" : orange, "o" : purple, "p" : dark_yellow, "q" : orange, 
-            "r" : light_blue, "s" : orange}
+        "./data/gameboards/Rushhour12x12_7.csv" : { "X" : red, "A" : purple, "B" : light_blue,
+            "C" : dark_blue, "D" : blue, "E" : yellow,
+            "F" : orange, "G" : light_blue, "H" : dark_blue,
+            "I" : orange, "J" : dark_blue, "K" : orange, "L" : light_blue,
+            "M" : grey, "N" : dark_blue, "O" : dark_yellow, "P" : purple,
+            "Q" : purple, "R" : dark_yellow, "S" : grey, "T" : orange,
+            "U" : light_blue, "V" : yellow, "W" : light_blue, "Y" : dark_blue, "a" : blue,
+            "b" : light_blue, "c" : blue, "d" : orange, "e" : purple,
+            "f" : yellow, "g" : dark_yellow, "h" : dark_blue, "i" : yellow,
+            "j" : dark_blue, "k" : dark_blue, "l" : dark_blue, "m" : dark_yellow,
+            "n" : grey, "o" : blue, "p" : light_blue, "q" : purple, 
+            "r" : light_blue, "s" : dark_blue}
         }
         
     colormap = colormaps[csv]
