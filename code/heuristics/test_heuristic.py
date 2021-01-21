@@ -20,7 +20,8 @@ def test_heuristic(game, heuristic, size, data):
             game.move(move[0], move[1])
             scores.append(round(winning_comparison( game ,winning_hash),5))
 
-    print(scores)
+    #print(scores)
+    return(scores)
 
 def load_winning_moveset(size, data):
     board_number = data[-5]
