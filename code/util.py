@@ -1,6 +1,8 @@
 from code.classes.board import Board
 import matplotlib.pyplot as plt
 from matplotlib import animation
+import numpy as np
+
 
 def make_animation(moves, size, csv, name):
     """
@@ -68,12 +70,12 @@ def make_animation(moves, size, csv, name):
             "I" : dark_blue, "J" : orange, "K" : light_blue, "L" : grey,
             "M" : blue, "N" : yellow, "O" : light_blue, "P" : orange,
             "Q" : orange, "R" : dark_blue, "S" : yellow, "T" : blue,
-            "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "AA" : grey,
-            "AB" : blue, "AC" : light_blue, "AD" : dark_yellow, "AE" : dark_blue,
-            "AF" : orange, "AG" : blue, "AH" : light_blue, "AI" : grey,
-            "AJ" : dark_blue, "AK" : dark_yellow, "AL" : purple, "AM" : yellow,
-            "AN" : orange, "AO" : purple, "AP" : dark_yellow, "AQ" : orange, 
-            "AR" : light_blue, "AS" : orange}
+            "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "a" : grey,
+            "b" : blue, "c" : light_blue, "d" : dark_yellow, "e" : dark_blue,
+            "f" : orange, "g" : blue, "h" : light_blue, "i" : grey,
+            "j" : dark_blue, "k" : dark_yellow, "l" : purple, "m" : yellow,
+            "n" : orange, "o" : purple, "p" : dark_yellow, "q" : orange, 
+            "r" : light_blue, "s" : orange}
         }
         
     colormap = colormaps[csv]

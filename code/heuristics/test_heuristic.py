@@ -7,7 +7,7 @@ def test_heuristic(game, heuristic, size, data):
     scores = []
     if heuristic == "blocking_cars":
         
-        scores.append(round(blocking_cars_calculate_score(game),5))
+        scores.append(round(blocking_cars_calculate_score(game, depth=2),5))
 
         for move in solution:
             game.move(move[0], move[1])
@@ -15,10 +15,10 @@ def test_heuristic(game, heuristic, size, data):
     elif heuristic == "winning_comparison":
         winning_hash = get_winning_hash(solution, size, data)
 
-        scores.append(round(winning_comparison( game ,winning_hash),5))
+        scores.append(round(winning_comparison(game ,winning_hash),5))
         for move in solution:
             game.move(move[0], move[1])
-            scores.append(round(winning_comparison( game ,winning_hash),5))
+            scores.append(round(winning_comparison(game ,winning_hash),5))
 
     print(scores)
 

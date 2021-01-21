@@ -133,9 +133,6 @@ if __name__ == "__main__":
 
     # ------------------------------------------------------------------------        
     elif algorithm == "check":
-        random = Random_algorithm(size, data)
-        random.run(1)
-        winning_hash = random.get_winning_hash()
         
         board = Board(size, data)
         board.load_board()
@@ -153,16 +150,15 @@ if __name__ == "__main__":
                 board.log_move(move, step)
                 board.draw_board()
                 
-                score = winning_comparison(board, winning_hash)
-                print(score)
 
                 if board.won():
                     print("Game was won")
                     break
             else:
                 print("Invalid move")
-            
-        board.save_log()
+
+        make_animation(board.moves, board_sizes[board_number], data, "test")
+        #board.save_log()
         print("Game ended")
 
     # ------------------------------------------------------------------------
