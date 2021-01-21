@@ -1,6 +1,8 @@
 from code.classes.board import Board
 import matplotlib.pyplot as plt
 from matplotlib import animation
+import numpy as np
+
 
 def make_animation(moves, size, csv, name):
     """
@@ -62,18 +64,18 @@ def make_animation(moves, size, csv, name):
             "Q" : orange, "R" : dark_blue, "S" : yellow, "T" : blue,
             "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "Z" : grey},
 
-        "./data/gameboards/Rushhour12x12_7.csv" : { "X" : red, "A" : blue, "B" : light_blue,
-            "C" : dark_yellow, "D" : dark_blue, "E" : orange,
-            "F" : blue, "G" : light_blue, "H" : dark_blue,
-            "I" : dark_blue, "J" : orange, "K" : light_blue, "L" : grey,
-            "M" : blue, "N" : yellow, "O" : light_blue, "P" : orange,
-            "Q" : orange, "R" : dark_blue, "S" : yellow, "T" : blue,
-            "U" : dark_blue, "V" : purple, "W" : purple, "Y" : dark_yellow, "AA" : grey,
-            "AB" : blue, "AC" : light_blue, "AD" : dark_yellow, "AE" : dark_blue,
-            "AF" : orange, "AG" : blue, "AH" : light_blue, "AI" : grey,
-            "AJ" : dark_blue, "AK" : dark_yellow, "AL" : purple, "AM" : yellow,
-            "AN" : orange, "AO" : purple, "AP" : dark_yellow, "AQ" : orange, 
-            "AR" : light_blue, "AS" : orange}
+        "./data/gameboards/Rushhour12x12_7.csv" : { "X" : red, "A" : purple, "B" : light_blue,
+            "C" : dark_blue, "D" : blue, "E" : yellow,
+            "F" : orange, "G" : light_blue, "H" : dark_blue,
+            "I" : orange, "J" : dark_blue, "K" : orange, "L" : light_blue,
+            "M" : grey, "N" : dark_blue, "O" : dark_yellow, "P" : purple,
+            "Q" : purple, "R" : dark_yellow, "S" : grey, "T" : orange,
+            "U" : light_blue, "V" : yellow, "W" : light_blue, "Y" : dark_blue, "a" : blue,
+            "b" : light_blue, "c" : blue, "d" : orange, "e" : purple,
+            "f" : yellow, "g" : dark_yellow, "h" : dark_blue, "i" : yellow,
+            "j" : dark_blue, "k" : dark_blue, "l" : dark_blue, "m" : dark_yellow,
+            "n" : grey, "o" : blue, "p" : light_blue, "q" : purple, 
+            "r" : light_blue, "s" : dark_blue}
         }
         
     colormap = colormaps[csv]
