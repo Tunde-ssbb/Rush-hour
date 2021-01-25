@@ -19,7 +19,7 @@ class Random_algorithm:
         """
         solutions = []
         for i in range(number_of_attempts):
-            print(len(solutions))
+            print(f"finding random solution {len(solutions) + 1}")
             
             # reset length and best solution to initial values
             self.length_best_solution = float('inf')
