@@ -3,7 +3,7 @@ import random
 import copy
 import time
 
-def depth_first_algorithm(game, max_moves, archive = None):
+def depth_first_algorithm(game, max_moves, archive = None, filter_cars = None):
     """
     depth first algorithm that finds the shortest solution with equal or less than the max_moves.
     an archive is used to reduce the running time of the algorithm
@@ -31,6 +31,10 @@ def depth_first_algorithm(game, max_moves, archive = None):
         #time.sleep(1)
  
         possible_moves = game.find_moves()
+        #print(f"before filter {possible_moves}")
+        if filter_cars:
+            possible_moves = {car: move for car,move in possible_moves.items() if car in filter_cars}
+            #print(f"after filter {possible_moves}")
         # randomize the order of moves
         cars = list(possible_moves.keys())
         cars = random.sample(cars, len(cars))
@@ -47,14 +51,14 @@ def depth_first_algorithm(game, max_moves, archive = None):
                 game.move(car, step)
                 game.moves.append([car,step])
                 # go to the branch of the move
-                depth_first_algorithm(game, max_moves, archive = archive)
+                depth_first_algorithm(game, max_moves, archive = archive, filter_cars = filter_cars)
 
                 # done with the branch and move back and load the board
                 game.step_back()
                 game.load_board_from_hash(current_board_state)
 
 
-def depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions):
+def depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions, filter = None):
     """
     function used to call the depth first algorithm.
     with fixed_solutions on False the algoritm is run number_of_attempts times.
@@ -66,7 +70,15 @@ def depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions)
         for n in range(number_of_attempts):
             game = Board(size,data)
             archive = {}
-            depth_first_algorithm(game, max_moves, archive = archive)
+            filter_cars = []
+            if filter:
+                for moveset in filter:
+                    filter_cars.extend([move[0] for move in moveset])
+                filter_cars = list(set(filter_cars))
+                print(f"filtering: {filter_cars}")
+            else:
+                filter_cars = None
+            depth_first_algorithm(game, max_moves, archive = archive, filter_cars = filter_cars)
             # print(len(game.shortest_solution_movesets))
             if len(game.shortest_solution_movesets) != 0:
                 solutions.append(game.shortest_solution_movesets)
@@ -75,7 +87,7 @@ def depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions)
         while len(solutions)  < number_of_attempts :
             game = Board(size,data)
             archive = {}
-            depth_first_algorithm(game, max_moves, archive = archive)
+            depth_first_algorithm(game, max_moves, archive = archive, filter = filter)
             # print(f"solutions found: {len(game.shortest_solution_movesets)}")
             if len(game.shortest_solution_movesets) != 0:
                 solutions.append(game.shortest_solution_movesets)
