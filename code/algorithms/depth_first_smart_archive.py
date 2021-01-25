@@ -30,10 +30,10 @@ def depth_first_algorithm(game, max_moves, archive = None, filter_cars = None):
         #print(f"{len(archive)} boards in archive")
         #time.sleep(1)
  
-        possible_moves = game.find_moves()
-        #print(f"before filter {possible_moves}")
-        if filter_cars:
-            possible_moves = {car: move for car,move in possible_moves.items() if car in filter_cars}
+        possible_moves = game.find_moves(filter_cars = filter_cars)
+
+        # if filter_cars:
+        #     possible_moves = {car: move for car,move in possible_moves.items() if car in filter_cars}
             #print(f"after filter {possible_moves}")
         # randomize the order of moves
         cars = list(possible_moves.keys())
