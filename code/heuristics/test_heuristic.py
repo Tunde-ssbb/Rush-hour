@@ -101,12 +101,7 @@ def test_heuristic(game, heuristic, size, data, best=True):
                 scores.append(next_scores)
 
 
-<<<<<<< HEAD
-    #print(scores)
-    return(scores)
-=======
     return scores
->>>>>>> 609f3ce4ff0cafedf7b673997a96d75e517e7f78
 
 def load_winning_moveset(size, data):
     board_number = data[-5]

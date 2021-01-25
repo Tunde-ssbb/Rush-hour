@@ -2,7 +2,7 @@ from code.classes.board import Board
 from code.classes.car import Car
 from code.util import make_animation, save_log, get_cars
 from code.algorithms.random import Random_algorithm
-from code.algorithms.depth_first import depth_first_algorithm, depth_first_main
+from code.algorithms.depth_first_smart_archive import depth_first_main
 from code.algorithms.improve_solution import improve_solutions
 from code.algorithms.breadth_first import breadth_first_algorithm
 from code.heuristics.winning_comparison import winning_comparison
@@ -47,20 +47,26 @@ if __name__ == "__main__":
         solutions = random.run(number_of_attempts, max_moves)
         print(random.length_best_solution)
         print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
+        short_solutions = improve_solutions(solutions, size, data, animation=True, log=False)
 
     # --------------------------- depth algorithm --------------------------
     elif algorithm == "depth_first":
         number_of_attempts = int(input("Number of attempts: "))
-        # max_moves = int(input("Maximum number of moves: "))
-        random = Random_algorithm(size, data)
-        max_moves = len(random.run(1, 100)[0])
+        max_moves = int(input("Maximum number of moves: "))
+        # random = Random_algorithm(size, data)
+        # max_moves = len(random.run(1, 100)[0])
         # while max_moves > 1000:
         #     max_moves = random.run(10)
-        print(f"random steps: {max_moves}")
-        solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
-        print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
+        # print(f"random steps: {max_moves}")
+        start = time.time()
+        solutions = depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions=False)
+        end = time.time()
+        for solution in solutions:
+            save_log(solution, str(board_number))
+            print(f"solution of length {len(solution)} found.")
+        print(f"time to find a solution: {round(end - start,2)} seconds")
+        # print("starting optimalization")
+        # short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
         """
         number_correct_solutions = 0
         for solution in short_solutions:
