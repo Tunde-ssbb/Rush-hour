@@ -2,7 +2,7 @@ from code.classes.board import Board
 from code.classes.car import Car
 from code.util import make_animation, save_log, get_cars
 from code.algorithms.random import Random_algorithm
-from code.algorithms.depth_first import depth_first_algorithm, depth_first_main
+from code.algorithms.depth_first_smart_archive import depth_first_algorithm, depth_first_main
 from code.algorithms.improve_solution import improve_solutions
 from code.algorithms.breadth_first import breadth_first_algorithm
 from code.heuristics.winning_comparison import winning_comparison
@@ -51,24 +51,7 @@ if __name__ == "__main__":
 
     # --------------------------- depth algorithm --------------------------
     elif algorithm == "depth_first":
-        number_of_attempts = int(input("Number of attempts: "))
-        # max_moves = int(input("Maximum number of moves: "))
-        random = Random_algorithm(size, data)
-        max_moves = len(random.run(1, 100)[0])
-        # while max_moves > 1000:
-        #     max_moves = random.run(10)
-        print(f"random steps: {max_moves}")
-        solutions = depth_first_main(number_of_attempts, max_moves, size, data, True)
-        print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=True, log=True)
-        """
-        number_correct_solutions = 0
-        for solution in short_solutions:
-            if len(solution) == 15:
-                number_correct_solutions += 1
-
-        print(f"{number_correct_solutions} solutions out of {number_of_attempts} are the best solution")
-        """
+        solution = depth_first_main(1,17, board_sizes[board_number],data, fixed_solutions = False)
 
 
 
@@ -84,8 +67,8 @@ if __name__ == "__main__":
 
     # ------------------------------------------------------------------------
     elif algorithm == "test_improve_solution":
-        number_of_attempts = 100
-        max_moves = 2000
+        number_of_attempts = 10
+        max_moves = 7170
         random = Random_algorithm(size, data)
 
         start = time.time()
@@ -93,7 +76,7 @@ if __name__ == "__main__":
         start = begin = time.time()
         solutions = random.run(number_of_attempts, max_moves)
         end = time.time()
-        print(f"time to find a solution: {round(end - start,2)} seconds")
+        print(f"time to find solutions: {round(end - start,2)} seconds")
 
         start = time.time()
         short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
@@ -117,14 +100,12 @@ if __name__ == "__main__":
             for result in results:
                 if result == lengths[i]:
                     heights[i] += 1
-            
-
-
+        
         plt.figure(1)
         plt.bar(lengths,heights)
         plt.xlabel("number of moves")
         plt.xticks(lengths)
-        plt.savefig(f'100solutions_of_board{board_number}.png')
+        plt.savefig(f'10solutions_of_board{board_number}-2.png')
      
     elif algorithm == "test_heuristic":
         game = Board(size, data)
