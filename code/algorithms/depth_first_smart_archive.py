@@ -12,25 +12,21 @@ def depth_first_algorithm(game, max_moves, archive = None):
     # check if the branch reached a winning solution
     if game.won():
         moves = game.moves[:]
+        #print(f"solution found: {len(moves)}")
         if len(moves) < len(game.shortest_solution_movesets) or game.shortest_solution_movesets == []:
             game.log_shortest_solution_movesets(moves)
 
     # dynamically cut off depth search at the shortest solution length
-    if len(game.shortest_solution_movesets) > 0:
-        if len(game.shortest_solution_movesets[-1]) < max_moves:
-                    max_moves = len(game.shortest_solution_movesets[-1])
+    # if len(game.shortest_solution_movesets) > 0:
+    #     if len(game.shortest_solution_movesets[-1]) < max_moves:
+    #                 max_moves = len(game.shortest_solution_movesets[-1])
 
     # if the new branch is in the archive ignore the branch
-    elif (game.give_hash() not in archive or len(archive.get(game.give_hash(), max_moves +1)) > len(game.moves)) and len(game.moves) < max_moves :
+    elif len(game.moves) < max_moves and (game.give_hash() not in archive or (archive.get(game.give_hash(), max_moves +1) > len(game.moves)))  :
         # save the current board to be able to go back
         current_board_state = game.give_hash()
-        # hash the current board
-            # if game.give_hash() not in archive:
-            #     print(f"add to archive: {game.give_hash()} ")
-            # elif  len(archive.get(game.give_hash(), max_moves +1)) > len(game.moves):
-            #     print(f"updating {game.give_hash()}in archive from {len(archive.get(game.give_hash()))} to {len(game.moves)} ")
 
-        archive.update({current_board_state:copy.deepcopy(game.moves)})
+        archive.update({current_board_state:len(game.moves)})
         #print(f"{len(archive)} boards in archive")
         #time.sleep(1)
  
