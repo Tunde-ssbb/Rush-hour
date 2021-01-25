@@ -196,7 +196,7 @@ class Board():
             range_of_i = range(length - 1, -1, -1)
         return range_of_i
 
-    def find_moves(self):
+    def find_moves(self, filter_cars = None):
         """
         Function find all possible moves in current board state. 
         Output: possible_moves (dict{car_id(str):moving range(list[start(int),stop(int)])})
@@ -205,39 +205,40 @@ class Board():
         possible_moves = {} 
 
         for car_id in self.cars:
-            car = self.cars[car_id]
+            if filter_cars and car_id in filter_cars:
+                car = self.cars[car_id]
 
-            # isolate board row/column containing car
-            if car.orientation == "H":
-                board = self.board[car.y,:]
-                place = car.x
-            else:
-                board = self.board[:,car.x]
-                place = car.y
-            
-            # isolate squares ahead, and behind the car
-            backward = board[:place]
-            forward = board[place+car.length:]
-
-            # count available squares
-            moves_forward = 0
-            moves_backward = 0
-            for i in forward:
-                if i=="#":
-                    moves_forward += 1
+                # isolate board row/column containing car
+                if car.orientation == "H":
+                    board = self.board[car.y,:]
+                    place = car.x
                 else:
-                    break
-            for i in np.flip(backward):
-                if i=="#":
-                    moves_backward += 1
-                else:
-                    break
+                    board = self.board[:,car.x]
+                    place = car.y
+                
+                # isolate squares ahead, and behind the car
+                backward = board[:place]
+                forward = board[place+car.length:]
 
-            # save moves in car object
-            car.moves = (-moves_backward, moves_forward)
+                # count available squares
+                moves_forward = 0
+                moves_backward = 0
+                for i in forward:
+                    if i=="#":
+                        moves_forward += 1
+                    else:
+                        break
+                for i in np.flip(backward):
+                    if i=="#":
+                        moves_backward += 1
+                    else:
+                        break
 
-            # add to possible moves dictionary if moves are possible
-            if moves_forward != 0 or moves_backward != 0:
-                possible_moves.update({car.letter_id: [-moves_backward, moves_forward]})
+                # save moves in car object
+                car.moves = (-moves_backward, moves_forward)
+
+                # add to possible moves dictionary if moves are possible
+                if moves_forward != 0 or moves_backward != 0:
+                    possible_moves.update({car.letter_id: [-moves_backward, moves_forward]})
 
         return possible_moves
