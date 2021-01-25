@@ -205,7 +205,7 @@ class Board():
         possible_moves = {} 
 
         for car_id in self.cars:
-            if filter_cars and car_id in filter_cars:
+            if not filter_cars or (filter_cars and car_id in filter_cars):
                 car = self.cars[car_id]
 
                 # isolate board row/column containing car
