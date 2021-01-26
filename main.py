@@ -2,11 +2,7 @@ from code.classes.board import Board
 from code.classes.car import Car
 from code.util import make_animation, save_log, get_cars
 from code.algorithms.random import Random_algorithm
-<<<<<<< HEAD
 from code.algorithms.depth_first_smart_archive import depth_first_main
-=======
-from code.algorithms.depth_first_smart_archive import depth_first_algorithm, depth_first_main
->>>>>>> 74f960ee1cc2b891e43474c857cb04ae38595c65
 from code.algorithms.improve_solution import improve_solutions
 from code.algorithms.breadth_first import breadth_first_algorithm
 from code.heuristics.winning_comparison import winning_comparison
@@ -85,8 +81,11 @@ if __name__ == "__main__":
         heigths = [44, 43, 26, 30, 26, 16, 6, 1, 1, 2, 3, 5, 4, 1, 2, 3, 4, 3, 5, 3, 6, 4, 4, 2, 1, 1, 1, 1, 1, 1]
         """
 
-        number_of_attempts = 250
-        max_moves = 6000
+        max_moves_board = { "1": 287, "2": 167, "3": 2680,
+                            "4": 2889, "5": 4441, "6": 1691, "7": 6000}
+
+        number_of_attempts = 1000
+        max_moves = max_moves_board[board_number]
         random = Random_algorithm(size, data)
 
         start = time.time()
