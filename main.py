@@ -4,12 +4,12 @@ from code.util import make_animation, save_log, get_cars
 from code.algorithms.random import random_main
 from code.algorithms.depth_first_smart_archive import depth_first_smart_archive_main
 from code.algorithms.improve_solution import improve_solutions
-from code.algorithms.breadth_first import breadth_first_algorithm
 import random
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+import ast
 
 
 
@@ -64,18 +64,41 @@ if __name__ == "__main__":
         short_solutions = improve_solutions(solutions, data, animation=False, log=False)
 
 
-    # --------------------------- Depth algorithm --------------------------
+    # --------------------------- Depth first algorithm --------------------------
     elif algorithm == "depth_first":
-        number_of_attempts = int(input("Number of attempts: "))
+        # get all function parameters from user
+        fixed_solutions = True if input("Create fixed number of solutions (y/n):") == "y" else False
+        if fixed_solutions:
+            number_of_attempts = int(input("number of solutions (int):"))
+        else:
+            number_of_attempts = int(input("number of runs (int):"))
+        branch_and_bound = True if input("Use dynamic bound for depth (y/n):") == "y" else False
         max_moves = int(input("Maximum number of moves: "))
-        
+        randomize = True if input("Randomize order of search (y/n):") == "y" else False
+        filter_movesets = input("Filter with solution movesets (None/solution movesets):")
+        if filter_movesets == "None":
+            filter_movesets = None
+        else:
+            # interpret str as list
+            filter_movesets = ast.literal_eval(filter_movesets)
+
+        # run algorithm
         start = time.time()
-        solutions = depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions=False)
+        solutions = depth_first_smart_archive_main(number_of_attempts, max_moves, data, fixed_solutions=fixed_solutions, branch_and_bound = branch_and_bound, randomize = randomize, filter_movesets = filter_movesets)
         end = time.time()
-        for solution in solutions:
-            save_log(solution, str(board_number))
-            print(f"solution of length {len(solution)} found.")
-        print(f"time to find a solution: {round(end - start,2)} seconds")   
+        print(f"runtime: {round(end - start,2)} seconds") 
+
+        log = True if input("Log solutions (y/n):") == "y" else False
+        
+        # print solutions and log if requested
+        if len(solutions):
+            for i in range(len(solutions)):
+                if log:
+                    save_log(solutions[i], str(board_number)+"_"+str(i))
+                print(f"solution of length {len(solutions[i])} found: {solutions[i]}")
+        else:
+            print("no solution was found")
+          
 
 
     # --------------------------- breadth algorithm --------------------------
