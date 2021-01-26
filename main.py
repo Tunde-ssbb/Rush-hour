@@ -2,7 +2,11 @@ from code.classes.board import Board
 from code.classes.car import Car
 from code.util import make_animation, save_log, get_cars
 from code.algorithms.random import Random_algorithm
+<<<<<<< HEAD
+from code.algorithms.depth_first_smart_archive import depth_first_main
+=======
 from code.algorithms.depth_first_smart_archive import depth_first_algorithm, depth_first_main
+>>>>>>> 74f960ee1cc2b891e43474c857cb04ae38595c65
 from code.algorithms.improve_solution import improve_solutions
 from code.algorithms.breadth_first import breadth_first_algorithm
 from code.heuristics.winning_comparison import winning_comparison
@@ -48,13 +52,20 @@ if __name__ == "__main__":
         solutions = random.run(number_of_attempts, max_moves)
         print(random.length_best_solution)
         print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
+        short_solutions = improve_solutions(solutions, size, data, animation=True, log=False)
 
     # --------------------------- depth algorithm --------------------------
     elif algorithm == "depth_first":
-        solution = depth_first_main(1,17, board_sizes[board_number],data, fixed_solutions = False)
-
-
+        number_of_attempts = int(input("Number of attempts: "))
+        max_moves = int(input("Maximum number of moves: "))
+        
+        start = time.time()
+        solutions = depth_first_main(number_of_attempts, max_moves, size, data, fixed_solutions=False)
+        end = time.time()
+        for solution in solutions:
+            save_log(solution, str(board_number))
+            print(f"solution of length {len(solution)} found.")
+        print(f"time to find a solution: {round(end - start,2)} seconds")   
 
 
     # --------------------------- breadth algorithm --------------------------

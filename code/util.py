@@ -2,6 +2,7 @@ from code.classes.board import Board
 import matplotlib.pyplot as plt
 from matplotlib import animation
 import numpy as np
+import csv
 
 
 def make_animation(moves, size, csv, name):
@@ -117,7 +118,7 @@ def make_animation_frame(board, size, colormap):
 def save_log(moves, name):
 
     # create output csv file
-    with open('data/logs/output'+name+'.csv', 'w') as output_file:
+    with open('data/logs/depth_first_board_'+name+'.csv', 'w') as output_file:
         csv_writer = csv.writer(output_file, delimiter=',')
 
         # write headers and moves in output file
