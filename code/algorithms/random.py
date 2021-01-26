@@ -64,6 +64,7 @@ def random_algorithm(game, length_best_solution):
             game.move(car, step)
             game.log_move(car, step)
 
+        # stop algorithm if longer than shortest solution found
         if len(game.moves) >= length_best_solution:
             break
 
