@@ -19,7 +19,7 @@ def random_main(data, number_of_attempts, max_moves):
 
         # repeat random algorithm until smaller solution than max moves is found
         while length_best_solution > max_moves:
-            game = Board(data[0], data[1])
+            game = Board(data)
             new_solution = random_algorithm(game, length_best_solution)
             
             # replace length best solution if new solution is smaller
