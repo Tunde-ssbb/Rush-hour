@@ -135,3 +135,15 @@ def get_cars(data):
             cars.append(row['car'])
 
     return cars
+
+def load_winning_moveset(size, data):
+    board_number = data[-5]
+
+    data = f"./data/logs/solution_board{board_number}.csv"
+    moves = []
+    with open(data, 'r') as csv_file:
+        move_reader = csv.DictReader(csv_file, delimiter=',')
+
+        for row in move_reader:
+            moves.append([row['car'], int(row['move'])])
+    return moves

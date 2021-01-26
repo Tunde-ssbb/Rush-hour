@@ -36,8 +36,8 @@ if __name__ == "__main__":
         sys.exit(0)
 
     size = board_sizes[board_number]
-    data = f"./data/gameboards/Rushhour{board_sizes[board_number]}x{board_sizes[board_number]}_{board_number}.csv"
-
+    csv = f"./data/gameboards/Rushhour{board_sizes[board_number]}x{board_sizes[board_number]}_{board_number}.csv"
+    data = [size, csv]
 
     # --------------------------- Random algorithm --------------------------
     if algorithm == "random":     
@@ -46,8 +46,8 @@ if __name__ == "__main__":
 
         solutions, length_best_solution = random_main(size, data, number_of_attempts, max_moves)
         
-        # print("starting optimalization")
-        # short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
+        print("starting optimalization")
+        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
 
     # --------------------------- depth algorithm --------------------------
     elif algorithm == "depth_first":
