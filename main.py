@@ -79,7 +79,6 @@ if __name__ == "__main__":
 
     # ------------------------------------------------------------------------
     elif algorithm == "test_improve_solution":
-<<<<<<< HEAD
         """
         board 7:
         lengths = [25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 47, 49, 50, 51, 53, 54, 55, 58, 69, 72]
@@ -92,10 +91,6 @@ if __name__ == "__main__":
         number_of_attempts = 1000
         max_moves = max_moves_board[board_number]
         random = Random_algorithm(size, data)
-=======
-        number_of_attempts = 10
-        max_moves = 7170
->>>>>>> 4d89d616c1c3bf55d770ec55382eeeb173dda069
 
         start = time.time()
     
