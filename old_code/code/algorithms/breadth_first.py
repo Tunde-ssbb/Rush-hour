@@ -2,7 +2,6 @@ from code.classes.board import Board
 from code.heuristics.blocking_cars import blocking_cars_calculate_score
 import queue
 import copy
-import time
 
 def breadth_first_algorithm(game, depth = None, origin = "main"):
     """
