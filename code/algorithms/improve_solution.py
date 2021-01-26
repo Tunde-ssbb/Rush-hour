@@ -6,7 +6,12 @@ import copy
 def improve_solutions(solutions, size, data, animation, log):
     """
     algorithm that takes solutions and removes and reorders the moves so that it gets smaller.
-    with the animation and log parameter it is possible to make those of every solution
+    with the animation and log parameter it is possible to make those of every solution.
+
+    The current algotithm is optimized for large solutions of bigger boards, this can be changed with the parameters:
+    minimum_improvement: lower will be faster on smaller boards
+    chunk_size (useless_moves): a size of 10 is fine for all boards but can be set.
+    chunk_size (in remove_cut_inaccuracy line 28): for the small boards can be skipped by using a large number  
     """
 
     short_solutions = []
@@ -14,70 +19,27 @@ def improve_solutions(solutions, size, data, animation, log):
     
     for solution in solutions:
         short_solution = solution
-        print(len(short_solution))
-        old_length = len(short_solution)
-        new_length = 0
-        print("_____________Removing_cut_useless_moves___________")
-        # cut the solution up in chunks of size 10 and remove the useless moves it until there is less than 50 improvement
-        while old_length - new_length > 50:
-            old_length = len(short_solution)
-            separated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, 10, size, data)
-            short_solution = improve_cut_solution(separated_moveset, hashes, size, data) + last_moves
-            new_length = len(short_solution)
-            print(len(short_solution))
+        print(f"Initial length of solution {solution_number}: {len(short_solution)}")
+        print("________Removing_cut_useless_moves_____________")
+        # cut the solution up in chunks and remove the useless moves until the improvement is the minimum_improvement or less
+        short_solution = remove_cut_useless_moves(short_solution, size, data, minimum_improvement=50, chunk_size=10)
 
-        print("_____________Removing_cut_inaccuracy______________")
-        # cut the solution up in chunks of size 30 and remove the inaccuracy until there is no more improvement
-        old_length = len(short_solution)
-        new_length = old_length - 1
-        while old_length > new_length:
-            old_length = len(short_solution)
-            separated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, 30, size, data)
+        print("________Removing_cut_inaccuracy________________")
+        # cut the solution up in chunks and remove the inaccuracy until there is no more improvement
+        short_solution = remove_cut_inaccuracy(short_solution, size, data, chunk_size=30)
 
-            canidates = []
-            for moveset in separated_moveset:
-                canidates.append(check_for_possible_inaccuracy(moveset, size, data))
-            
-            short_solution = solve_cut_inaccuracy(separated_moveset, canidates, hashes, size, data) + last_moves
-            new_length = len(short_solution)
-            print(len(short_solution))
-
-        print("_____________Removing_cut_useless_moves_increasing__________")
-        # cut the solution up in chunks of size 10 and remove the useless moves it until there is less than 50 improvement
-        chunk_size = 10
-        while chunk_size < len(short_solution) / 2:
-            old_length = len(short_solution)
-            separated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, chunk_size, size, data)
-            short_solution = improve_cut_solution(separated_moveset, hashes, size, data) + last_moves
-            new_length = len(short_solution)
-            chunk_size = chunk_size * 2
-            print(len(short_solution))
-
-        print("_____________Removing_useless_moves______________")
+        print("________Removing_cut_useless_moves_increasing__")
+        # cut the solution up in chunks and remove the useless moves, multiplying the chunk size by 2 every loop iteration
+        short_solution = remove_cut_useless_moves_increasing(short_solution, size, data, chunk_size=10)
+        print("________Removing_useless_moves_________________")
         # remove the useless moves but now of the whole solution
-        old_length = len(short_solution)
-        new_length = old_length - 1
-        while old_length > new_length:
-            old_length = len(short_solution)
-            short_solution = remove_useless_moves(short_solution, size, data)
-            new_length = len(short_solution)
+        short_solution = remove_useless_moves_all(short_solution, size, data)
         
-        old_length = len(short_solution)
-        new_length = old_length - 1
-
-        print("_____________Removing_inaccuracy_________________")
+        print("________Removing_inaccuracy____________________")
         # try to restructure moves of a car that makes moves in the same direction twice (inaccuracy)
-        old_length = len(short_solution)
-        new_length = old_length - 1
-        while old_length > new_length:
-            old_length = len(short_solution)
-            canidates = check_for_possible_inaccuracy(short_solution, size, data)
-            short_solution = solve_inaccuracy(short_solution, canidates, size, data)
-            new_length = len(short_solution)
-            print(len(short_solution))
-            
+        short_solution = removing_inaccuracy_all(short_solution, size, data)
         
-        print(f"solution_number {solution_number} final length : {len(short_solution)}")
+        print(f"solution_number {solution_number} final length : {len(short_solution)}\n")
         short_solutions.append(short_solution)
         
         if animation:
@@ -188,12 +150,12 @@ def check_for_possible_inaccuracy(moveset, size, data):
     last_direction = {}
     canidates = []
     
-    # direction is 1 or -1
     move_number = 0
     for car in cars:
         last_direction[car] = [0,move_number]
 
     for move in moveset:
+        # direction is 1 or -1
         direction = int(move[1] / abs(move[1]))
         
         if direction == last_direction[move[0]][0]:
@@ -261,6 +223,7 @@ def cut_moveset_and_get_board_hashes(moveset, chunck_size , size, data):
     cut_moveset = []
     moves = []
     game = Board(size,data)
+    # hash begin position board
     hashes.append(game.give_hash())
     move_number = 0
 
@@ -299,9 +262,78 @@ def solve_cut_inaccuracy(separated_moveset, canidates, hashes, size, data):
     for i in range(len(separated_moveset)):
         separated_moveset[i] = solve_inaccuracy(separated_moveset[i], canidates[i], size, data, start_hash=hashes[i], end_hash=hashes[i+1])
         
-
     moveset = []
     for chunk in separated_moveset:
         moveset = moveset + chunk
 
     return moveset
+
+def remove_cut_useless_moves(short_solution, size, data, minimum_improvement=0, chunk_size=10):
+    """
+    remove useless moves from a subset of the solution until the improvement is
+    equal or less than the minimum_improvement
+    """
+    old_length = len(short_solution)
+    new_length = 0
+    while old_length - new_length > minimum_improvement:
+        old_length = len(short_solution)
+        separated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, chunk_size, size, data)
+        short_solution = improve_cut_solution(separated_moveset, hashes, size, data) + last_moves
+        new_length = len(short_solution)
+        print(len(short_solution))
+    
+    return short_solution
+
+def remove_cut_inaccuracy(short_solution, size, data, chunk_size=30):
+    """
+    remove inaccuracies from a subset of the solution until there is no improvement
+    """
+    old_length = len(short_solution)
+    new_length = 0
+    while old_length > new_length:
+        old_length = len(short_solution)
+        separated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, chunk_size, size, data)
+
+        canidates = []
+        for moveset in separated_moveset:
+            canidates.append(check_for_possible_inaccuracy(moveset, size, data))
+        
+        short_solution = solve_cut_inaccuracy(separated_moveset, canidates, hashes, size, data) + last_moves
+        new_length = len(short_solution)
+    return short_solution
+
+def remove_cut_useless_moves_increasing(short_solution, size, data, chunk_size=10):
+    """
+    remove inaccuracies from a subset of the solution while increasing the chunk_size.
+    stops when the chunk_size is more than half of the solution size
+    """
+    while chunk_size < len(short_solution) / 2:
+        separated_moveset, hashes, last_moves = cut_moveset_and_get_board_hashes(short_solution, chunk_size, size, data)
+        short_solution = improve_cut_solution(separated_moveset, hashes, size, data) + last_moves
+        chunk_size = chunk_size * 2
+    return short_solution
+
+def remove_useless_moves_all(short_solution, size, data):
+    """
+    remove useless moves from the solution until there is no improvement
+    """
+    old_length = len(short_solution)
+    new_length = 0
+    while old_length > new_length:
+        old_length = len(short_solution)
+        short_solution = remove_useless_moves(short_solution, size, data)
+        new_length = len(short_solution)
+    return short_solution
+
+def removing_inaccuracy_all(short_solution, size, data):
+    """
+    remove inaccuracies from the solution until there is no improvement
+    """
+    old_length = len(short_solution)
+    new_length = 0
+    while old_length > new_length:
+        old_length = len(short_solution)
+        canidates = check_for_possible_inaccuracy(short_solution, size, data)
+        short_solution = solve_inaccuracy(short_solution, canidates, size, data)
+        new_length = len(short_solution)
+    return short_solution
