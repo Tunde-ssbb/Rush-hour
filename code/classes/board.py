@@ -6,14 +6,14 @@ from code.classes.car import Car
 
 class Board():
 
-    def __init__(self, size, csv, hash=None):
-        self.size = size
+    def __init__(self, data, hash=None):
+        self.size, csv = data
         self.cars = {}
         self.moves = []
         self.shortest_solution_movesets = []
         self.archive = set()
         self.load_cars_from_csv(csv)
-        self.board = np.full((size, size), "#")
+        self.board = np.full((self.size, self.size), "#")
         if hash == None:
             self.load_board()
         else:

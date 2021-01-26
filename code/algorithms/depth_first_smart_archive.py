@@ -1,7 +1,6 @@
 from code.classes.board import Board
 import random
 import copy
-import time
 
 def depth_first_smart_archive_algorithm(game, max_moves, archive, filter_cars = None, branch_and_bound = False, randomize = False):
     """
@@ -56,7 +55,7 @@ def depth_first_smart_archive_algorithm(game, max_moves, archive, filter_cars = 
                 game.load_board_from_hash(current_board_state)
 
 
-def depth_first_smart_archive_main(number_of_attempts, max_moves, size, data, fixed_solutions, filter_movesets = None, branch_and_bound = False, randomize = False):
+def depth_first_smart_archive_main(number_of_attempts, max_moves, data, fixed_solutions, filter_movesets = None, branch_and_bound = False, randomize = False):
     """
     function used to call the depth first algorithm.
     with fixed_solutions on False the algoritm is run number_of_attempts times.
@@ -76,7 +75,7 @@ def depth_first_smart_archive_main(number_of_attempts, max_moves, size, data, fi
         solutions = []
         # run the algorithm a fixed amount of times
         for n in range(number_of_attempts):
-            game = Board(size,data)
+            game = Board(data)
             archive = {}
             # run the algorithm
             depth_first_smart_archive_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
@@ -87,7 +86,7 @@ def depth_first_smart_archive_main(number_of_attempts, max_moves, size, data, fi
         solutions = []
         # run the algorithm until enough solutions are found
         while len(solutions)  < number_of_attempts :
-            game = Board(size,data)
+            game = Board(data)
             archive = {}
             # run the algorithm
             depth_first_smart_archive_algorithm(game, max_moves, archive = archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
