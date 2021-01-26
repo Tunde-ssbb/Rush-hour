@@ -11,6 +11,7 @@ from code.heuristics.test_heuristic import test_heuristic
 import random
 import sys
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 import time
 
@@ -67,8 +68,14 @@ if __name__ == "__main__":
 
     # ------------------------------------------------------------------------
     elif algorithm == "test_improve_solution":
-        number_of_attempts = 10
-        max_moves = 7170
+        """
+        board 7:
+        lengths = [25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 47, 49, 50, 51, 53, 54, 55, 58, 69, 72]
+        heigths = [44, 43, 26, 30, 26, 16, 6, 1, 1, 2, 3, 5, 4, 1, 2, 3, 4, 3, 5, 3, 6, 4, 4, 2, 1, 1, 1, 1, 1, 1]
+        """
+
+        number_of_attempts = 250
+        max_moves = 6000
         random = Random_algorithm(size, data)
 
         start = time.time()
@@ -101,11 +108,22 @@ if __name__ == "__main__":
                 if result == lengths[i]:
                     heights[i] += 1
         
-        plt.figure(1)
-        plt.bar(lengths,heights)
-        plt.xlabel("number of moves")
-        plt.xticks(lengths)
-        plt.savefig(f'10solutions_of_board{board_number}-2.png')
+        print()
+
+        print(f"shortest solution = {lengths[0]} with {round((heights[0]/sum(heights))* 100, 2)} %")
+
+        ax = plt.figure(1).gca()
+
+        #ax = fig.add_subplot(111)
+        ax.bar(lengths,heights)
+        print(lengths)
+        print(heights)
+        ax.set_xlabel(f"number_of_moves")
+        ax.text(0.45, 0.93, f"shortest solution = {lengths[0]} with {round((heights[0]/sum(heights))* 100, 2)} %", verticalalignment='center', transform=ax.transAxes, bbox={'facecolor': 'red', 'alpha': 0.5, 'pad': 5})
+        ax.set_title(f" {number_of_attempts} solutions of board {board_number}")
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+        #plt.xticks(lengths)
+        plt.savefig(f'{number_of_attempts}solutions_of_board{board_number}-2.png')
      
     elif algorithm == "test_heuristic":
         game = Board(size, data)
