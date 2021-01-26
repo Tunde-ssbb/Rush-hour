@@ -118,7 +118,7 @@ def make_animation_frame(board, size, colormap):
 def save_log(moves, name):
 
     # create output csv file
-    with open('data/logs/depth_first_board_'+name+'.csv', 'w') as output_file:
+    with open('data/logs/'+name+'.csv', 'w') as output_file:
         csv_writer = csv.writer(output_file, delimiter=',')
 
         # write headers and moves in output file

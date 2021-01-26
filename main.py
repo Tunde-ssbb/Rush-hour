@@ -1,18 +1,10 @@
 from code.classes.board import Board
 from code.classes.car import Car
 from code.util import make_animation, save_log, get_cars
-<<<<<<< HEAD
-from code.algorithms.random import Random_algorithm
-from code.algorithms.depth_first_smart_archive import depth_first_main
-=======
 from code.algorithms.random import random_main
-from code.algorithms.depth_first_smart_archive import depth_first_algorithm, depth_first_main
->>>>>>> 4d89d616c1c3bf55d770ec55382eeeb173dda069
+from code.algorithms.depth_first_smart_archive import depth_first_smart_archive_main
 from code.algorithms.improve_solution import improve_solutions
 from code.algorithms.breadth_first import breadth_first_algorithm
-from code.heuristics.winning_comparison import winning_comparison
-from code.heuristics.a_star import a_star_heuristic
-from code.heuristics.test_heuristic import test_heuristic
 import random
 import sys
 import matplotlib.pyplot as plt
@@ -46,15 +38,33 @@ if __name__ == "__main__":
 
     # --------------------------- Random algorithm --------------------------
     if algorithm == "random":     
+        # get input number of attempts and max moves
         number_of_attempts = int(input("Number of attempts: "))  
         max_moves = int(input("Maximum number of moves: ")) 
 
-        solutions, length_best_solution = random_main(size, data, number_of_attempts, max_moves)
-        
-        print("starting optimalization")
-        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
+        # run random algorithm
+        solutions, length_best_solution = random_main(data, number_of_attempts, max_moves)
 
-    # --------------------------- depth algorithm --------------------------
+        # save logged moves and print length of each solution
+        for solution in solutions:
+            save_log(solution, f"random_board{str(board_number)}")
+            print(f"solution of length {len(solution)} found.")     
+
+
+    # --------------------------- Optimalisation algorithm --------------------------
+    elif algorithm == "optimalisation":
+        # get input number of attempts and max moves
+        number_of_attempts = int(input("Number of attempts: "))  
+        max_moves = int(input("Maximum number of moves: ")) 
+
+        # run random algorithm
+        solutions, length_best_solution = random_main(data, number_of_attempts, max_moves)
+        
+        # run optimalisation algorithm
+        short_solutions = improve_solutions(solutions, data, animation=False, log=False)
+
+
+    # --------------------------- Depth algorithm --------------------------
     elif algorithm == "depth_first":
         number_of_attempts = int(input("Number of attempts: "))
         max_moves = int(input("Maximum number of moves: "))
@@ -178,5 +188,5 @@ if __name__ == "__main__":
 
     # ------------------------------------------------------------------------
     else:
-        print("Invalid algorithm input. Choose: random, depth_first, or breadth_first")
+        print("Invalid algorithm input. Choose: random, optimalisation, or depth_first")
         sys.exit(0)

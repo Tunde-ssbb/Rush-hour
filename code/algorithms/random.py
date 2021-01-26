@@ -3,7 +3,7 @@ import copy
 import random
 
 
-def random_main(size, data, number_of_attempts, max_moves):
+def random_main(data, number_of_attempts, max_moves):
     """
     Function used to call random_moves algorithm number of attempts times.
     Keeps running until length of solution is smaller than max moves.
@@ -19,7 +19,7 @@ def random_main(size, data, number_of_attempts, max_moves):
 
         # repeat random algorithm until smaller solution than max moves is found
         while length_best_solution > max_moves:
-            game = Board(size, data)
+            game = Board(data[0], data[1])
             new_solution = random_algorithm(game, length_best_solution)
             
             # replace length best solution if new solution is smaller
