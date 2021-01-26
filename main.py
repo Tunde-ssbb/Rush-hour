@@ -1,6 +1,6 @@
 from code.classes.board import Board
 from code.classes.car import Car
-from code.util import make_animation, save_log, get_cars
+from code.util import make_animation, save_log, get_cars, bar_plot_of_solutions
 from code.algorithms.random import random_main
 from code.algorithms.depth_first_smart_archive import depth_first_smart_archive_main
 from code.algorithms.improve_solution import improve_solutions
@@ -121,45 +121,32 @@ if __name__ == "__main__":
         max_moves_board = { "1": 287, "2": 167, "3": 2680,
                             "4": 2889, "5": 4441, "6": 1691, "7": 6000}
 
-        number_of_attempts = 1000
-        max_moves = max_moves_board[board_number]
-        random = Random_algorithm(size, data)
+        number_of_attempts = int(input("number of attempts:"))
+        plot = input("plot Y/N:")
+        if plot.capitalize() == "Y":
+            plot = True
+        else:
+            plot = False
 
+        max_moves = max_moves_board[board_number]
+        
         start = time.time()
     
         start = begin = time.time()
-        solutions = random_main(size, data, number_of_attempts, max_moves)
+        solutions = random_main(data, number_of_attempts, max_moves)
+        print(solutions)
         end = time.time()
         print(f"time to find solutions: {round(end - start,2)} seconds")
 
         start = time.time()
-        short_solutions = improve_solutions(solutions, size, data, animation=False, log=False)
+        short_solutions = improve_solutions(solutions[0], data, animation=False, log=False)
         end = time.time()
         print(f"time to optimize solution: {round(end - start,2)} seconds")
         print(f"Total time: {round(end - begin,2)} seconds")
 
+        if plot:
+            bar_plot_of_solutions(short_solutions, board_number, number_of_attempts)
         
-        results = []
-        for solution in short_solutions:
-            results.append(len(solution))
-        
-        lengths = []
-        for result in results:
-            if result not in lengths:
-                lengths.append(result)
-
-        lengths.sort()
-        heights = [0]* len(lengths)
-        for i in range(len(lengths)):
-            for result in results:
-                if result == lengths[i]:
-                    heights[i] += 1
-        
-        plt.figure(1)
-        plt.bar(lengths,heights)
-        plt.xlabel("number of moves")
-        plt.xticks(lengths)
-        plt.savefig(f'10solutions_of_board{board_number}-2.png')
      
     elif algorithm == "test_heuristic":
         game = Board(size, data)

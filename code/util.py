@@ -1,6 +1,7 @@
 from code.classes.board import Board
 import matplotlib.pyplot as plt
 from matplotlib import animation
+from matplotlib.ticker import MaxNLocator
 import numpy as np
 import csv
 
@@ -147,3 +148,29 @@ def load_winning_moveset(size, data):
         for row in move_reader:
             moves.append([row['car'], int(row['move'])])
     return moves
+
+def bar_plot_of_solutions(solutions, board_number, number_of_attempts):
+    results = []
+    for solution in solutions:
+        results.append(len(solution))
+    
+    lengths = []
+    for result in results:
+        if result not in lengths:
+            lengths.append(result)
+
+    lengths.sort()
+    heights = [0]* len(lengths)
+    for i in range(len(lengths)):
+        for result in results:
+            if result == lengths[i]:
+                heights[i] += 1
+    
+    ax = plt.figure(1).gca()
+
+    ax.bar(lengths,heights)
+    ax.set_xlabel(f"number_of_moves")
+    ax.text(0.45, 0.93, f"shortest solution = {lengths[0]} with {round((heights[0]/sum(heights))* 100, 2)} %", verticalalignment='center', transform=ax.transAxes, bbox={'facecolor': 'red', 'alpha': 0.5, 'pad': 5})
+    ax.set_title(f" {number_of_attempts} solutions of board {board_number}")
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    plt.savefig(f'{number_of_attempts}solutions_of_board{board_number}-2.png')
