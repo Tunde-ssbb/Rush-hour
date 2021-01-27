@@ -54,7 +54,7 @@ def improve_solutions(solutions, data, animation, log):
         if animation:
             make_animation(short_solution, data, str(solution_number))
         if log:
-            save_log(short_solution, str(solution_number))
+            save_log(short_solution, f"board_{data[1][-5]}_improved_solution_{str(solution_number)}")
         solution_number += 1
     return short_solutions
 
