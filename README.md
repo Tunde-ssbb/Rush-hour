@@ -20,7 +20,7 @@ In the section below is described how to create various results from the code in
 
 ### main&#46;py
 
-All the code that was used to create results can be accessed and run trhough main&#46;py. The command line code to run the program is structured as follows:
+All the code that was used to create results can be accessed and run through main&#46;py. The command line code to run the program is structured as follows:
 
 <code>python main&#46;py [board number] [algorithm name] </code>
 
@@ -51,16 +51,6 @@ If this option is chosen the user is asked for additional inputs:
 
 If all information is filled correctly, the algorithm will be run.
 
-#### optimalisation
-If this option is chosen the user is asked for additional inputs:
-
-- <code>Number of attempts</code> expects an integer number, indicating how many solutions will be looked for (e.g. filling in 5 will return 5 solutions)
-- <code>Maximum moves</code> expects and integer number, indicating what the bound is for the random solutions. (a high number will improve the speed of the random part of the algorithm, and decrease that of the improvment algorithm)
-- <code>Create animation</code> expects either <code>y</code>(es) or <code>n</code>(o), indicating whether the solutions will be logged. Entering <code>y</code> will create a gif file with the found solution animated under <code>data/results/[index of solution].gif</code>
-- <code>Log solution</code> expects either <code>y</code>(es) or <code>n</code>(o), indicating whether the solutions will be logged. Entering <code>y</code> will create a csv file with the found solution under <code>data/logs/[index of solution].csv</code>
-
-If all information is filled correctly, the algorithm will be run.
-
 #### depth_first
 If this option is chosen the user is asked for additional inputs:
 
@@ -77,3 +67,30 @@ If all information is filled correctly, the algorithm will be run.
 
 This options allows the user to play the chosen gameboard directly in the terminal. If it is chosen, the user is repeatedly asked for a <code>Car</code>, for which a car id (e.g. "X") is needed, and for a step (e.g. -1) indicating the number of steps the car should take. (negative is up/left, positive is down/right)
 
+## Algorithms
+
+In the following section the mothods with which the algoritms get a solution is discribed.
+
+### Random
+The random algorithm solves a board by doing random moves. It does this by making moves and after each move checking if the board is solved. If the number of moves exceeds the parameter <code>max_moves</code> it will restart from the biginning position. This ensures that the lenght of the found solution is smaller than <code>max_moves</code>. It isn't ensured for there to be a solution and if <code>max_moves</code> is choosen too small it is expected that it it will take a long time to get a solution.
+
+### Improve solution
+The improve solution algorithm takes a solution and makes it smaller by removing unnecessary moves and restructering the moves.
+
+- remove useless moves
+Makes changes to the original solution and then test if the solution is still valid. It does this by going through the moves 3 times. For every move it then looks in the next part of the solution for moves of that same vehicle, this is a pair. The first time steps of a pair both gets set to 0. If the solution is still valid the change is kept. This is done for ever pair in the solution. After the end of the solution is reached the moves with steps of 0 get removed. The second time the pairs get combined and moved to the first in the solution and the third time to the last. Lastly it is tested to set every indiviual move to 0.
+
+- remove inaccuracies
+An inaccuracy is defined as a vehicle moving in the same direction twice in a row with moves of other vehicles in between. All the pairs of moves that do this are called canidates, because not every inaccuracy is actually inacurate. Because the useless moves are removed before this you can't just combine these. To solve this the two moves are moved closer to eachother. This is done by moving the first move untile the solution becomes invalid. When we reach this the move after the first move is moved together with the first move, so a chunk of two moves. This repeats until the chunk touches the second move. After this is done for all the canidates remove useless moves is ran again. Note that because things get moved around it can happen that canidates are not in their original position and thus other moves are moved around. This didn't apear to be happening often and fixing it might lead to longer run time instead of faster.
+
+Running it like that will work but takes a long time to speed things up the solution is devided is smaler parts.
+1. remove useless moves is ran on chunks of size 10. And stops when the improvement is below a treshold, currently on 50.
+2. remove inaccuracies is ran on chunks of size 30. And stops when there is no improvement. Note that remove useless moves is also inside this.
+3. remove useless moves while increasing the chunk size every cycle with 2 until it is more thatn half the size of the solution. Currently starting with chunk size 10.
+4. remove useless moves of the whole solution.
+5. remove inaccuracies in the whole solution.
+
+After this the solution found is not quarenteed to be the best solution. There are more complex moves that are not removed or compensated for. 
+
+### Depth first search
+The depth first search algorithm is a depth first search algorithm with a bound and an archive. We called this archive a smart archive because it also keeps track of the move number at which the board state was reached. If a board reaches a board state that is in the archive it also checks whether it reached it faster. This ensures that the shortes solution is found.

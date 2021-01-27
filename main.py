@@ -17,7 +17,7 @@ if __name__ == "__main__":
     # dictionary of board numbers with corresponding sizes
     board_sizes = { "1": 6, "2": 6, "3": 6,
                     "4": 9, "5": 9, "6": 9,
-                    "7": 12, "test" : 4}
+                    "7": 12}
 
     # check if command line argument input is valid
     if len(sys.argv) != 3:
