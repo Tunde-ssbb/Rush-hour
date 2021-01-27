@@ -135,12 +135,11 @@ if __name__ == "__main__":
     
         start = begin = time.time()
         solutions = random_main(data, number_of_attempts, max_moves)
-        print(solutions)
         end = time.time()
         print(f"time to find solutions: {round(end - start,2)} seconds")
 
         start = time.time()
-        short_solutions = improve_solutions(solutions[0], data, animation=False, log=False)
+        short_solutions = improve_solutions(solutions, data, animation=False, log=False)
         end = time.time()
         print(f"time to optimize solution: {round(end - start,2)} seconds")
         print(f"Total time: {round(end - begin,2)} seconds")
