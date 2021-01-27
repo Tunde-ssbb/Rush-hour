@@ -49,9 +49,9 @@ if __name__ == "__main__":
         print(f"runtime: {round(end - start,2)} seconds") 
 
         # save logged moves and print length of each solution
-        for solution in solutions:
+        for i in range(len(solutions)):
             if log:
-                save_log(solution, f"random_board{str(board_number)}")
+                save_log(solutions[i], f"random_board{str(board_number)}_{str(i)}")
             print(f"solution of length {len(solution)} found.")     
 
 
@@ -150,7 +150,7 @@ if __name__ == "__main__":
         if game.won():
             print("Game was won")
 
-        game.save_log()
+        save_log(game.moves, f"gameplay_board_{board_number}")
         print("Game ended")
 
     # ------------------------------------------------------------------------
