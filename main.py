@@ -85,6 +85,7 @@ if __name__ == "__main__":
         branch_and_bound = True if input("Use dynamic bound for depth (y/n):") == "y" else False
         max_moves = int(input("Maximum number of moves: "))
         randomize = True if input("Randomize order of search (y/n):") == "y" else False
+        log = True if input("Log solutions (y/n):") == "y" else False
         filter_movesets = input("Filter with solution movesets (None/solution movesets):")
         if filter_movesets == "None":
             filter_movesets = None
@@ -98,7 +99,7 @@ if __name__ == "__main__":
         end = time.time()
         print(f"runtime: {round(end - start,2)} seconds") 
 
-        log = True if input("Log solutions (y/n):") == "y" else False
+        
         
         # print solutions and log if requested
         if len(solutions):
