@@ -18,8 +18,41 @@ The difficulty of implementing an algorithm on the boards varies per board, as t
 #### Terminology
 Short explanations on the terminology used in this readme and repository:
 - Car = in this readme and repository used to signify vehicles (of length 2 and 3)
-- Move = combination of car and number of steps
-- Boardstate = places of cars on the board in a specific situation
+- Move = combination of car and number of steps (negative or positive to signify direction)
+- Boardstate = specific set up of vehicles on the board
+
+## Algorithms
+
+In the following section we describe the algorithms that are implemented to find solutions to our case.
+
+### Random
+The random algorithm solves a board by doing random moves. It does this by picking a random move out of all currently possible moves, and checking after each move whether the game was won. If the number of randomly made moves exceeds the parameter <code>max_moves</code> it will restart the algorithm, and try again from the beginning position. Seen as the algorithm is random, the time to find a solution varies. High values for <code>max_moves</code> can give much faster results, and low values could potentially take very long. This algorithm is usefull for quickly finding solutions, when the quality of the solution is not very important.
+
+### Optimalise
+This algorithm consists of two parts. Firstly, the random algorithm is used to create random solutions. Secondly, the **improve solution algorithm** is applied to the found solutions. This algorithm is an iterative algorithm, meaning it takes an existing solution and tries to improve it, by removing unnecessary moves and restructering them. It does so by the following processes:
+
+- **Remove useless moves**
+makes changes to the original solution and then tests if the solution is still valid. It does this by going through the moves **4** times. For every move it tries to find a partner (a later move made by the same car), to form a pair. In the first iteration, steps of a pair both get set to 0 (to eliminate cars needlessly moving back and forth). If the solution is still valid the moves are useless, and can be removed. The second and third iteration, the pairs get combined into a single move (by adding the steps together), this total move replaces the first and second move of the pair respectively (while the other is set to 0). Lastly all moves are removed individually to see if any is unnecessary.
+
+- **Remove inaccuracies**.
+An inaccuracy is defined as a vehicle moving in the same direction twice in a row with moves of other vehicles in between. All the pairs of moves that do this are called canidates, because not every inaccuracy is actually inacurate. Because the useless moves are removed before this you can't just combine these. To solve this the two moves are moved closer to eachother. This is done by changing the order of moves, so that the first move gets closer to the second, untill the solution becomes invalid. When we reach this, the first move and the one directly following it are moved together , as a chunk. This repeats until the chunk touches the second move. After this is done for all the canidates remove useless moves is ran again. 
+Note that because things get moved around it can happen that canidates are not in their original position and thus other moves are moved around. This didn't apear to be happening often and fixing it might lead to longer run time instead of faster.
+
+Running the algorithm exactly like described above will work, but to speed it up, the solution is cut into parts. The total algorithm does the following:
+1. remove useless moves is ran on chunks of size 10. And stops when the improvement is below a treshold, currently on 50.
+2. remove inaccuracies is ran on chunks of size 30. And stops when there is no improvement. Note that remove useless moves is also inside this.
+3. remove useless moves while increasing the chunk size every cycle with 2 until it is more than half the size of the solution. Currently starting with chunk size 10.
+4. remove useless moves of the whole solution.
+5. remove inaccuracies in the whole solution.
+
+This algorithm works quite fast, and can create relatively good solutions. The advantage of this algorithm is that it does not have to search through any statespace, and thus it is still usable for much bigger, and more complex boards. However, it is not guaranteed to find optimal solutions since some mor complex needless moves are not filtered out.
+
+### Depth first search
+The depth first search algorithm is a constructive algorithm, meaning it creates a solution out of itself. It goes through the states, by searching the first child of the parent state (search here means examining/searching all child states), before moving to the second child. It searches up to a given depth (number of moves), this depth can be statically set, or dynamically determined to be one shorter than the shortest solution found so far.
+To prune the statespace a (smart) archive is used. This archive keeps track of the boardstates that have been previously visited. By also keeping track of the number of moves needed to get to each state, it is ensured that the states in archive are reached in the shortest amount of moves found so far. This ensures that the shortest solution can be found. 
+It is also possible to prune the statespace even further by use of a filter. This filter looks at existing solutions of the current board (given by the user) and finds which cars do not move in any of the solutions. These cars are then skipped, when looking for possible moves. 
+
+This algorithm is very useful, when you want to ensure the quality of the solution. When run completely, it will always find the shortest possible solution. The downfall however, is that it is very slow, since it does an almost exhaustive search of statespace.
 
 
 ## Usage
@@ -74,30 +107,3 @@ If all information is filled correctly, the algorithm will be run. The best solu
 
 This options allows the user to play the chosen gameboard directly in the terminal. If it is chosen, the user is repeatedly asked for a <code>Car</code>, for which a car id (e.g. "X") is needed, and for a step (e.g. -1) indicating the number of steps the car should take. (negative is up/left, positive is down/right)
 
-## Algorithms
-
-In the following section the mothods with which the algoritms get a solution is discribed.
-
-### Random
-The random algorithm solves a board by doing random moves. It does this by making moves and after each move checking if the board is solved. If the number of moves exceeds the parameter <code>max_moves</code> it will restart from the biginning position. This ensures that the lenght of the found solution is smaller than <code>max_moves</code>. It isn't ensured for there to be a solution and if <code>max_moves</code> is choosen too small it is expected that it it will take a long time to get a solution.
-
-### Improve solution
-The improve solution algorithm takes a solution and makes it smaller by removing unnecessary moves and restructering the moves.
-
-- remove useless moves
-Makes changes to the original solution and then test if the solution is still valid. It does this by going through the moves 3 times. For every move it then looks in the next part of the solution for moves of that same vehicle, this is a pair. The first time steps of a pair both gets set to 0. If the solution is still valid the change is kept. This is done for ever pair in the solution. After the end of the solution is reached the moves with steps of 0 get removed. The second time the pairs get combined and moved to the first in the solution and the third time to the last. Lastly it is tested to set every indiviual move to 0.
-
-- remove inaccuracies
-An inaccuracy is defined as a vehicle moving in the same direction twice in a row with moves of other vehicles in between. All the pairs of moves that do this are called canidates, because not every inaccuracy is actually inacurate. Because the useless moves are removed before this you can't just combine these. To solve this the two moves are moved closer to eachother. This is done by moving the first move untile the solution becomes invalid. When we reach this the move after the first move is moved together with the first move, so a chunk of two moves. This repeats until the chunk touches the second move. After this is done for all the canidates remove useless moves is ran again. Note that because things get moved around it can happen that canidates are not in their original position and thus other moves are moved around. This didn't apear to be happening often and fixing it might lead to longer run time instead of faster.
-
-Running it like that will work but takes a long time to speed things up the solution is devided is smaler parts.
-1. remove useless moves is ran on chunks of size 10. And stops when the improvement is below a treshold, currently on 50.
-2. remove inaccuracies is ran on chunks of size 30. And stops when there is no improvement. Note that remove useless moves is also inside this.
-3. remove useless moves while increasing the chunk size every cycle with 2 until it is more thatn half the size of the solution. Currently starting with chunk size 10.
-4. remove useless moves of the whole solution.
-5. remove inaccuracies in the whole solution.
-
-After this the solution found is not quarenteed to be the best solution. There are more complex moves that are not removed or compensated for. 
-
-### Depth first search
-The depth first search algorithm is a depth first search algorithm with a bound and an archive. We called this archive a smart archive because it also keeps track of the move number at which the board state was reached. If a board reaches a board state that is in the archive it also checks whether it reached it faster. This ensures that the shortes solution is found.
