@@ -1,8 +1,8 @@
 from code.classes.board import Board
 from code.classes.car import Car
-from code.util import make_animation, save_log, get_cars, bar_plot_of_solutions
+from code.util import make_animation, save_log, bar_plot_of_solutions
 from code.algorithms.random import random_main
-from code.algorithms.depth_first import depth_first__main
+from code.algorithms.depth_first import depth_first_main
 from code.algorithms.improve_solution import improve_solutions
 import random
 import sys
@@ -60,9 +60,13 @@ if __name__ == "__main__":
     elif algorithm == "optimalisation":
         # get input number of attempts and max moves
         number_of_attempts = int(input("Number of attempts: "))  
-        max_moves = int(input("Maximum number of moves: ")) 
-        animation = True if input("Create animation from solution (y/n):") == "y" else False
-        log = True if input("Log solutions (y/n):") == "y" else False
+        animation = True if input("Create animation from solution (y/n):").capitalize() == "Y" else False
+        log = True if input("Log solutions (y/n):").capitalize() == "Y" else False
+        plot = True if input("Plot solutions y/n:").capitalize() == "Y" else False
+        
+        max_moves_board = { "1": 287, "2": 167, "3": 2680,
+                            "4": 2889, "5": 4441, "6": 1691, "7": 6000}
+        max_moves = max_moves_board[board_number]
 
         # run random algorithm
         start = time.time()
@@ -73,6 +77,8 @@ if __name__ == "__main__":
         
         end = time.time()
         print(f"runtime: {round(end - start,2)} seconds")
+        if plot:
+            bar_plot_of_solutions(short_solutions, board_number, number_of_attempts)
 
     # --------------------------- Depth first algorithm --------------------------
     elif algorithm == "depth_first":
@@ -109,46 +115,7 @@ if __name__ == "__main__":
                 print(f"solution of length {len(solutions[i])} found: {solutions[i]}")
         else:
             print("no solution was found")
-          
 
-    # ------------------------------------------------------------------------
-    elif algorithm == "test_improve_solution":
-        """
-        board 7:
-        lengths = [25, 26, 27, 28, 29, 30, 31, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 47, 49, 50, 51, 53, 54, 55, 58, 69, 72]
-        heigths = [44, 43, 26, 30, 26, 16, 6, 1, 1, 2, 3, 5, 4, 1, 2, 3, 4, 3, 5, 3, 6, 4, 4, 2, 1, 1, 1, 1, 1, 1]
-        """
-
-        max_moves_board = { "1": 287, "2": 167, "3": 2680,
-                            "4": 2889, "5": 4441, "6": 1691, "7": 6000}
-
-        number_of_attempts = int(input("number of attempts:"))
-        plot = input("plot Y/N:")
-        if plot.capitalize() == "Y":
-            plot = True
-        else:
-            plot = False
-
-        max_moves = max_moves_board[board_number]
-        
-        start = time.time()
-    
-        start = begin = time.time()
-        solutions = random_main(data, number_of_attempts, max_moves)
-        print(solutions)
-        end = time.time()
-        print(f"time to find solutions: {round(end - start,2)} seconds")
-
-        start = time.time()
-        short_solutions = improve_solutions(solutions[0], data, animation=False, log=False)
-        end = time.time()
-        print(f"time to optimize solution: {round(end - start,2)} seconds")
-        print(f"Total time: {round(end - begin,2)} seconds")
-
-        if plot:
-            bar_plot_of_solutions(short_solutions, board_number, number_of_attempts)
-        
-     
     # ------------------------------------------------------------------------        
     elif algorithm == "play":
         
