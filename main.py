@@ -4,7 +4,6 @@ from code.util import make_animation, save_log, bar_plot_of_solutions
 from code.algorithms.random import random_main
 from code.algorithms.depth_first import depth_first_main
 from code.algorithms.improve_solution import improve_solutions
-import random
 import sys
 import matplotlib.pyplot as plt
 import numpy as np

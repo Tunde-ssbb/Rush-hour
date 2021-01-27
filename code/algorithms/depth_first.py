@@ -55,7 +55,7 @@ def depth_first_algorithm(game, max_moves, archive, filter_cars = None, branch_a
                 game.load_board_from_hash(current_board_state)
 
 
-def depth_first_smart_archive_main(number_of_attempts, max_moves, data, fixed_solutions, filter_movesets = None, branch_and_bound = False, randomize = False):
+def depth_first_main(number_of_attempts, max_moves, data, fixed_solutions, filter_movesets = None, branch_and_bound = False, randomize = False):
     """
     function used to call the depth first algorithm.
     with fixed_solutions on False the algoritm is run number_of_attempts times.
