@@ -82,15 +82,11 @@ if __name__ == "__main__":
     # --------------------------- Depth first algorithm --------------------------
     elif algorithm == "depth_first":
         # get all function parameters from user
-        fixed_solutions = True if input("Create fixed number of solutions (y/n):") == "y" else False
-        if fixed_solutions:
-            number_of_attempts = int(input("number of solutions (int):"))
-        else:
-            number_of_attempts = int(input("number of runs (int):"))
-        branch_and_bound = True if input("Use dynamic bound for depth (y/n):") == "y" else False
         max_moves = int(input("Maximum number of moves: "))
-        randomize = True if input("Randomize order of search (y/n):") == "y" else False
-        log = True if input("Log solutions (y/n):") == "y" else False
+        branch_and_bound = True if input("Use dynamic bound for depth (y/n):") == "y" else False
+        print_all = True if input("Print all solutions (y/n):") == "y" else False
+        log = True if input("Log best solution (y/n):") == "y" else False
+        animation = True if input("Animate best solution (y/n):") == "y" else False
         filter_movesets = input("Filter with solution movesets (None/solution movesets):")
         if filter_movesets == "None":
             filter_movesets = None
@@ -100,20 +96,19 @@ if __name__ == "__main__":
 
         # run algorithm
         start = time.time()
-        solutions = depth_first_main(number_of_attempts, max_moves, data, fixed_solutions=fixed_solutions, branch_and_bound = branch_and_bound, randomize = randomize, filter_movesets = filter_movesets)
+        solution = depth_first_main(max_moves, data, branch_and_bound = branch_and_bound, filter_movesets = filter_movesets, print_all = print_all)
         end = time.time()
         print(f"runtime: {round(end - start,2)} seconds") 
 
-        
-        
-        # print solutions and log if requested
-        if len(solutions):
-            for i in range(len(solutions)):
-                if log:
-                    save_log(solutions[i], str(board_number)+"_"+str(i))
-                print(f"solution of length {len(solutions[i])} found: {solutions[i]}")
+        # print best solution and log if requested
+        if len(solution):
+            print(f"best solution ({len(solution)} moves): {solution}")
+            if log:
+                save_log(solution, "depth_first"+board_number)
+            if animation:
+                make_animation(solution, data, "depth_first"+board_number)
         else:
-            print("no solution was found")
+            print("no solution found")
 
     # ------------------------------------------------------------------------        
     elif algorithm == "play":

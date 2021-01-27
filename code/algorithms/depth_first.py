@@ -2,7 +2,7 @@ from code.classes.board import Board
 import random
 import copy
 
-def depth_first_algorithm(game, max_moves, archive, filter_cars = None, branch_and_bound = False, randomize = False):
+def depth_first_algorithm(game, max_moves, archive, filter_cars = None, branch_and_bound = False, print_all = False):
     """
     depth first algorithm that finds the shortest solution with equal or less than the max_moves.
     an archive (given in )is used to reduce the running time of the algorithm
@@ -15,6 +15,9 @@ def depth_first_algorithm(game, max_moves, archive, filter_cars = None, branch_a
         # save solution if it is shorter than shortest one found
         if len(moves) < len(game.shortest_solution_movesets) or game.shortest_solution_movesets == []:
             game.log_shortest_solution_movesets(moves)
+        
+        if print_all:
+            print(f"solution of length {len(moves)} found: {moves}")
 
     # dynamically cut off depth search at the shortest solution length if branch and bound is set to true
     if branch_and_bound and len(game.shortest_solution_movesets) > 0:
@@ -32,10 +35,6 @@ def depth_first_algorithm(game, max_moves, archive, filter_cars = None, branch_a
         possible_moves = game.find_moves(filter_cars = filter_cars)
         cars = list(possible_moves.keys())
 
-        # randomize order if requested
-        if randomize:
-            cars = random.sample(cars, len(cars))
-
         # loop over all possible moves
         for car in cars:
             possible_steps = list(range(possible_moves[car][0], possible_moves[car][1]+1))
@@ -49,13 +48,13 @@ def depth_first_algorithm(game, max_moves, archive, filter_cars = None, branch_a
                 game.move(car, step)
                 game.moves.append([car,step])
                 # run algorithm on current branch
-                depth_first_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
+                depth_first_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, print_all = print_all)
                 # done with the branch and move back and load the board
                 game.step_back()
                 game.load_board_from_hash(current_board_state)
 
 
-def depth_first_main(number_of_attempts, max_moves, data, fixed_solutions, filter_movesets = None, branch_and_bound = False, randomize = False):
+def depth_first_main(max_moves, data, filter_movesets = None, branch_and_bound = False, print_all = False):
     """
     function used to call the depth first algorithm.
     with fixed_solutions on False the algoritm is run number_of_attempts times.
@@ -70,31 +69,12 @@ def depth_first_main(number_of_attempts, max_moves, data, fixed_solutions, filte
         filter_cars = create_filter(filter_movesets)
     else:
         filter_cars = filter_movesets
+    
+    game = Board(data)
+    archive = {}
+    depth_first_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, print_all = print_all)
 
-    if not fixed_solutions: 
-        solutions = []
-        # run the algorithm a fixed amount of times
-        for n in range(number_of_attempts):
-            game = Board(data)
-            archive = {}
-            # run the algorithm
-            depth_first_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
-            # the shortest solution (if any exists) is added to solution list
-            if len(game.shortest_solution_movesets) != 0:
-                solutions.append(game.shortest_solution_movesets)
-    else:
-        solutions = []
-        # run the algorithm until enough solutions are found
-        while len(solutions)  < number_of_attempts :
-            game = Board(data)
-            archive = {}
-            # run the algorithm
-            depth_first_algorithm(game, max_moves, archive = archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
-            # add shortest found solution to solution set
-            if len(game.shortest_solution_movesets) != 0:
-                solutions.append(game.shortest_solution_movesets)
-
-    return solutions
+    return game.shortest_solution_movesets
 
 def create_filter(filter_movesets):
     """
