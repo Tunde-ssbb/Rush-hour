@@ -129,13 +129,8 @@ def save_log(moves, name):
         csv_writer.writerows(moves)
 
 
-<<<<<<< HEAD
 def get_cars(csv_string):
     with open(csv_string, 'r') as csv_file:
-=======
-def get_cars(csv):
-    with open(csv, 'r') as csv_file:
->>>>>>> 19cba627a09b07c26a9878cf15c705f16651ea48
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         
         cars = []
