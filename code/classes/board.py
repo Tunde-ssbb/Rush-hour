@@ -150,17 +150,6 @@ class Board():
         """
         self.moves.pop()
 
-    def save_log(self):
-        """
-        Save the current saved moveset in a csv file. Output: csv file
-        """
-        # create output csv file
-        with open('data/logs/output.csv', 'w') as output_file:
-            csv_writer = csv.writer(output_file, delimiter=',')
-
-            # write headers and moves in output file
-            csv_writer.writerow(['car', 'move'])
-            csv_writer.writerows(self.moves)
 
     def archive_board(self):
         """

@@ -13,28 +13,24 @@ def random_main(data, number_of_attempts, max_moves):
     for i in range(number_of_attempts):
         print(f"finding random solution {len(solutions) + 1}")
         
-        # reset length and best solution to initial values
-        length_best_solution = float('inf')
-        best_solution = []
+        # reset length to initial value
+        length_solution = float('inf')
 
         # repeat random algorithm until smaller solution than max moves is found
-        while length_best_solution > max_moves:
+        while length_solution > max_moves:
             game = Board(data)
-            new_solution = random_algorithm(game, length_best_solution)
-            
-            # replace length best solution if new solution is smaller
-            if len(new_solution) < length_best_solution:
-                length_best_solution = len(new_solution)
+            new_solution = random_algorithm(game, max_moves)
+            length_solution = len(new_solution)
 
         # if solution found copy moves and add to solutions list
-        print(length_best_solution)
+        print(f"length random solution: {length_solution}")
         best_solution = copy.deepcopy(new_solution)
         solutions.append(best_solution)
 
     return solutions
 
 
-def random_algorithm(game, length_best_solution):
+def random_algorithm(game, max_moves):
     """
     Random algorithm that finds solutions by performing random moves. 
     Keeps running until game is won.
@@ -65,7 +61,7 @@ def random_algorithm(game, length_best_solution):
             game.log_move(car, step)
 
         # stop algorithm if longer than shortest solution found
-        if len(game.moves) >= length_best_solution:
+        if len(game.moves) > max_moves:
             break
 
     return game.moves
