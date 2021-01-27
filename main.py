@@ -41,13 +41,18 @@ if __name__ == "__main__":
         # get input number of attempts and max moves
         number_of_attempts = int(input("Number of attempts: "))  
         max_moves = int(input("Maximum number of moves: ")) 
-
+        log = True if input("Log solutions (y/n):") == "y" else False
+        
         # run random algorithm
-        solutions, length_best_solution = random_main(data, number_of_attempts, max_moves)
+        start = time.time()
+        solutions = random_main(data, number_of_attempts, max_moves)
+        end = time.time()
+        print(f"runtime: {round(end - start,2)} seconds") 
 
         # save logged moves and print length of each solution
         for solution in solutions:
-            save_log(solution, f"random_board{str(board_number)}")
+            if log:
+                save_log(solution, f"random_board{str(board_number)}")
             print(f"solution of length {len(solution)} found.")     
 
 
@@ -56,13 +61,18 @@ if __name__ == "__main__":
         # get input number of attempts and max moves
         number_of_attempts = int(input("Number of attempts: "))  
         max_moves = int(input("Maximum number of moves: ")) 
+        animation = True if input("Create animation from solution (y/n):") == "y" else False
+        log = True if input("Log solutions (y/n):") == "y" else False
 
         # run random algorithm
-        solutions, length_best_solution = random_main(data, number_of_attempts, max_moves)
+        start = time.time()
+        solutions = random_main(data, number_of_attempts, max_moves)
         
         # run optimalisation algorithm
-        short_solutions = improve_solutions(solutions, data, animation=False, log=False)
-
+        short_solutions = improve_solutions(solutions, data, animation=animation, log=log)
+        
+        end = time.time()
+        print(f"runtime: {round(end - start,2)} seconds")
 
     # --------------------------- Depth first algorithm --------------------------
     elif algorithm == "depth_first":

@@ -31,7 +31,7 @@ def random_main(data, number_of_attempts, max_moves):
         best_solution = copy.deepcopy(new_solution)
         solutions.append(best_solution)
 
-    return solutions, length_best_solution
+    return solutions
 
 
 def random_algorithm(game, length_best_solution):
