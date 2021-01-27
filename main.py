@@ -1,8 +1,8 @@
 from code.classes.board import Board
 from code.classes.car import Car
-from code.util import make_animation, save_log, get_cars, bar_plot_of_solutions
+from code.util import make_animation, save_log, bar_plot_of_solutions
 from code.algorithms.random import random_main
-from code.algorithms.depth_first_smart_archive import depth_first_smart_archive_main
+from code.algorithms.depth_first import depth_first__main
 from code.algorithms.improve_solution import improve_solutions
 import random
 import sys
@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
         # run algorithm
         start = time.time()
-        solutions = depth_first_smart_archive_main(number_of_attempts, max_moves, data, fixed_solutions=fixed_solutions, branch_and_bound = branch_and_bound, randomize = randomize, filter_movesets = filter_movesets)
+        solutions = depth_first_main(number_of_attempts, max_moves, data, fixed_solutions=fixed_solutions, branch_and_bound = branch_and_bound, randomize = randomize, filter_movesets = filter_movesets)
         end = time.time()
         print(f"runtime: {round(end - start,2)} seconds") 
 
