@@ -64,14 +64,14 @@ If all information is filled correctly, the algorithm will be run.
 #### depth_first
 If this option is chosen the user is asked for additional inputs:
 
-- <code>Fixed solutions</code> expects either <code>y</code>(es) or <code>n</code>(o). Entering <code>y</code> will set the algorithm to create a fixed number of solutions. Entering <code>n</code> will set the algorithm to run a number of times, and find the shortest solution of each run. 
-- <code>Number of solutions/runs</code> expects and integer number, the number of solutions to be found, or runs to be done respectively (which one depends on fixed solutions).
-- <code>Dynamic bound</code> expects either <code>y</code>(es) or <code>n</code>(o). Entering <code>n</code> will limit the depth_first algorithm at a fixed depth. Entering <code>y</code> will dynamically change the maximum search depth to the shortest solution that was found so far (thus decreasing the statespace).
-- <code>Randomize order</code> expects either <code>y</code>(es) or <code>n</code>(o). Entering <code>n</code> will set the algorithm to run through the branches in alphabetic order (based on car_id). Entering <code>y</code> will randomize the order in which the statespace is searched. 
-- <code>Log solution</code> expects either <code>y</code>(es) or <code>n</code>(o), indicating whether the solutions will be logged. Entering <code>y</code> will create a csv file with the found solution under <code>data/logs/[index of solution].csv</code>
+- <code>Maximum moves</code> expects and integer number, indicating what the bound is for the solutions. State space will be searched up to this depth
+- <code>Dynamic bound</code> expects either <code>y</code>(es) or <code>n</code>(o). Entering <code>n</code> will limit the depth_first algorithm at a fixed depth (namely, at the maximum moves). Entering <code>y</code> will dynamically change the maximum search depth to the shortest solution that was found so far (thus decreasing the statespace).
+- <code>Print all</code> expects either <code>y</code>(es) or <code>n</code>(o). Entering <code>y</code> will cause all found solutions to be printed in the terminal. 
+- <code>Log solution</code> expects either <code>y</code>(es) or <code>n</code>(o), indicating whether the solutions will be logged. Entering <code>y</code> will create a csv file with the found solution under <code>data/logs/depth_first[board_number].csv</code>
+- <code>Create animation</code> expects either <code>y</code>(es) or <code>n</code>(o), indicating whether the solutions will be logged. Entering <code>y</code> will create a gif file with the found solution animated under <code>data/results/depth_first[board_number].gif</code>
 - <code>Filter</code> expects either <code>None</code> or <code>a list of solution movesets</code>. Entering <code>a list of solution movesets</code> will look at the solutions, and extract cars that do not move throughout any of the found solutions. Branches where these cars are moved are pruned in the algorithm to reduce running time. Entering <code>None</code> will not affect the algorithm.
 
-If all information is filled correctly, the algorithm will be run.
+If all information is filled correctly, the algorithm will be run. The best solution (if any solution exists) will be printed at the end.
 
 #### play
 
