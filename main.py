@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     # --------------------------- Random algorithm --------------------------
     if algorithm == "random":     
-        # get input number of attempts and max moves
+        # get input for parameters of algorithm
         number_of_attempts = int(input("Number of solutions (int): "))  
         max_moves = int(input("Maximum number of moves (int): ")) 
         log = True if input("Log solutions (y/n):").capitalize() == "Y" else False

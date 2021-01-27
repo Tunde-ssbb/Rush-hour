@@ -1,5 +1,5 @@
 # Rush Hour Project
-### Team Lightning Mcqueen: Tünde de Vries, Jeroen van der Borgh & Hanne Brouwer
+##### Team Lightning Mcqueen: Tünde de Vries, Jeroen van der Borgh & Hanne Brouwer
 
 ## Case description
 Rush hour is a puzzlegame in which the objective is to move the red car to the exit of the board.
@@ -14,6 +14,13 @@ The boards also vary in difficulty to solve and statespace (how many boardstates
 
 The objective in this case is to create an algorithm that is able to find the solution on each board with the smallest possible number of moves.
 The difficulty of implementing an algorithm on the boards varies per board, as the statespace and difficulty is different for each board.
+
+#### Terminology
+Short explanations on the terminology used in this readme and repository:
+- Car = in this readme and repository used to signify vehicles (of length 2 and 3)
+- Move = combination of car and number of steps
+- Boardstate = places of cars on the board in a specific situation
+
 
 ## Usage
 In the section below is described how to create various results from the code in the repository. 
