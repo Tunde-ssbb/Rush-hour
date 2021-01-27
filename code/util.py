@@ -100,7 +100,7 @@ def make_animation(moves, data, name):
     # finish animation
     plt.axis("off")
     im_animation = animation.ArtistAnimation(fig, animationframes, interval=500, repeat_delay=1000, blit=True)
-    im_animation.save((name + ".gif"), writer="Pillow") 
+    im_animation.save(("data/results/"+name + ".gif"), writer="Pillow") 
     #plt.show()
         
 
