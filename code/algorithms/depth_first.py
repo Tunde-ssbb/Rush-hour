@@ -2,7 +2,7 @@ from code.classes.board import Board
 import random
 import copy
 
-def depth_first_smart_archive_algorithm(game, max_moves, archive, filter_cars = None, branch_and_bound = False, randomize = False):
+def depth_first_algorithm(game, max_moves, archive, filter_cars = None, branch_and_bound = False, randomize = False):
     """
     depth first algorithm that finds the shortest solution with equal or less than the max_moves.
     an archive (given in )is used to reduce the running time of the algorithm
@@ -49,7 +49,7 @@ def depth_first_smart_archive_algorithm(game, max_moves, archive, filter_cars = 
                 game.move(car, step)
                 game.moves.append([car,step])
                 # run algorithm on current branch
-                depth_first_smart_archive_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
+                depth_first_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
                 # done with the branch and move back and load the board
                 game.step_back()
                 game.load_board_from_hash(current_board_state)
@@ -78,7 +78,7 @@ def depth_first_smart_archive_main(number_of_attempts, max_moves, data, fixed_so
             game = Board(data)
             archive = {}
             # run the algorithm
-            depth_first_smart_archive_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
+            depth_first_algorithm(game, max_moves, archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
             # the shortest solution (if any exists) is added to solution list
             if len(game.shortest_solution_movesets) != 0:
                 solutions.append(game.shortest_solution_movesets)
@@ -89,7 +89,7 @@ def depth_first_smart_archive_main(number_of_attempts, max_moves, data, fixed_so
             game = Board(data)
             archive = {}
             # run the algorithm
-            depth_first_smart_archive_algorithm(game, max_moves, archive = archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
+            depth_first_algorithm(game, max_moves, archive = archive, filter_cars = filter_cars, branch_and_bound = branch_and_bound, randomize = randomize)
             # add shortest found solution to solution set
             if len(game.shortest_solution_movesets) != 0:
                 solutions.append(game.shortest_solution_movesets)
