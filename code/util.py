@@ -127,8 +127,8 @@ def save_log(moves, name):
         csv_writer.writerows(moves)
 
 
-def get_cars(data):
-    with open(data, 'r') as csv_file:
+def get_cars(csv):
+    with open(csv, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         
         cars = []

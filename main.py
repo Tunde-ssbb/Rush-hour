@@ -1,6 +1,6 @@
 from code.classes.board import Board
 from code.classes.car import Car
-from code.util import make_animation, save_log, get_cars, bar_plot_of_solutions
+from code.util import make_animation, save_log, bar_plot_of_solutions
 from code.algorithms.random import random_main
 from code.algorithms.depth_first import depth_first__main
 from code.algorithms.improve_solution import improve_solutions
