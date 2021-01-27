@@ -45,11 +45,11 @@ Running the algorithm exactly like described above will work, but to speed it up
 4. remove useless moves of the whole solution.
 5. remove inaccuracies in the whole solution.
 
-This algorithm works quite fast, and can create relatively good solutions. The advantage of this algorithm is that it does not have to search through any statespace, and thus it is still usable for much bigger, and more complex boards. However, it is not guaranteed to find optimal solutions since some mor complex needless moves are not filtered out.
+This algorithm works quite fast, and can create relatively good solutions. The advantage of this algorithm is that it does not have to search through any statespace, and thus it is still usable for much bigger, and more complex boards. However, it is not guaranteed to find optimal solutions since some more complex needless moves are not filtered out.
 
 ### Depth first search
 The depth first search algorithm is a constructive algorithm, meaning it creates a solution out of itself. It goes through the states, by searching the first child of the parent state (search here means examining/searching all child states), before moving to the second child. It searches up to a given depth (number of moves), this depth can be statically set, or dynamically determined to be one shorter than the shortest solution found so far.
-To prune the statespace a (smart) archive is used. This archive keeps track of the boardstates that have been previously visited. By also keeping track of the number of moves needed to get to each state, it is ensured that the states in archive are reached in the shortest amount of moves found so far. This ensures that the shortest solution can be found. 
+To prune the statespace a (smart) archive is used. This archive keeps track of the boardstates that have been previously visited. By also keeping track of the number of moves needed to get to each state, it is ensured that the states in archive are reached in the shortest number of moves found so far. This ensures that the shortest solution can be found. 
 It is also possible to prune the statespace even further by use of a filter. This filter looks at existing solutions of the current board (given by the user) and finds which cars do not move in any of the solutions. These cars are then skipped, when looking for possible moves. 
 
 This algorithm is very useful, when you want to ensure the quality of the solution. When run completely, it will always find the shortest possible solution. The downfall however, is that it is very slow, since it does an almost exhaustive search of statespace.
