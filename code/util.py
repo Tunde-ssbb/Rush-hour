@@ -6,14 +6,16 @@ import numpy as np
 import csv
 
 
-def make_animation(moves, size, csv, name):
+def make_animation(moves, data, name):
     """
     Create an gif animation of a particular moveset for a specfic game under a given name. 
     Input: moves (list[list[car_id(str),step(int)]]), size (int), csv (start state of board), name (str)
     """
 
     # create board
-    board = Board(size,csv)
+    size = data[0]
+    csv = data[1]
+    board = Board(data)
 
     # define colors
     red = [255,0,0]
@@ -127,8 +129,8 @@ def save_log(moves, name):
         csv_writer.writerows(moves)
 
 
-def get_cars(data):
-    with open(data, 'r') as csv_file:
+def get_cars(csv_string):
+    with open(csv_string, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         
         cars = []
