@@ -38,9 +38,9 @@ if __name__ == "__main__":
     # --------------------------- Random algorithm --------------------------
     if algorithm == "random":     
         # get input number of attempts and max moves
-        number_of_attempts = int(input("Number of attempts: "))  
-        max_moves = int(input("Maximum number of moves: ")) 
-        log = True if input("Log solutions (y/n):") == "y" else False
+        number_of_attempts = int(input("Number of solutions (int): "))  
+        max_moves = int(input("Maximum number of moves (int): ")) 
+        log = True if input("Log solutions (y/n):").capitalize() == "Y" else False
         
         # run random algorithm
         start = time.time()
@@ -52,13 +52,13 @@ if __name__ == "__main__":
         for i in range(len(solutions)):
             if log:
                 save_log(solutions[i], f"random_board{str(board_number)}_{str(i)}")
-            print(f"solution of length {len(solution)} found.")     
+            print(f"solution of length {len(solutions[i])} found.")    
 
 
     # --------------------------- Optimalisation algorithm --------------------------
     elif algorithm == "optimalisation":
-        # get input number of attempts and max moves
-        number_of_attempts = int(input("Number of attempts: "))  
+        # get input for parameters of algorithm
+        number_of_attempts = int(input("Number of solutions (int): "))  
         animation = True if input("Create animation from solution (y/n):").capitalize() == "Y" else False
         log = True if input("Log solutions (y/n):").capitalize() == "Y" else False
         plot = True if input("Plot solutions y/n:").capitalize() == "Y" else False
