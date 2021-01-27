@@ -111,16 +111,6 @@ if __name__ == "__main__":
             print("no solution was found")
           
 
-
-    # --------------------------- breadth algorithm --------------------------
-    elif algorithm == "breadth_first":
-        game = Board(size, data)
-        game.load_board()
-        shortest, lengths = breadth_first_algorithm(game)
-        make_animation(shortest, board_sizes[board_number], data)
-        print(len(lengths)," solutions were found.")
-
-
     # ------------------------------------------------------------------------
     elif algorithm == "test_improve_solution":
         """
@@ -159,55 +149,45 @@ if __name__ == "__main__":
             bar_plot_of_solutions(short_solutions, board_number, number_of_attempts)
         
      
-    elif algorithm == "test_heuristic":
-        game = Board(size, data)
-        #heuristic = "blocking_cars"
-        #heuristic = "winning_comparison"
-        heuristic = "a_star"
-        scores = test_heuristic(game, heuristic, size, data, best=False)
-        
-        for score in scores:
-            print(score)
-
-        game = Board(size, data)
-        scores = test_heuristic(game, heuristic, size, data, best=True)
-        
-        for score in scores:
-            print(score)
-
     # ------------------------------------------------------------------------        
-    elif algorithm == "check":
-                
-        board = Board(size, data)
-        board.load_board()
-        board.draw_board()
+    elif algorithm == "play":
+        
+        # create game and draw board
+        game = Board(data)
+        game.draw_board()
 
-        while True:
+        # repeat until game is won
+        while not game.won():
+            
+            # ask for car to move and check if car is valid
             move = input("Car:")
+            if move not in game.cars.keys():
+                print("Invalid car")
+
+            # quit game
             if move == "q":
                 break
+            
+            # ask for step input
             step = int(input("Step: "))
-            if move not in board.cars.keys():
-                print("Invalid car")
-            elif board.validate_move(move, step):
-                board.move(move, step)
-                board.log_move(move, step)
-                board.draw_board()
-                
-                score = a_star_heuristic(board)
-                print(score)
-
-                if board.won():
-                    print("Game was won")
-                    break
+            
+            # if valid move, move car, log move and draw new board
+            if game.validate_move(move, step):
+                game.move(move, step)
+                game.log_move(move, step)
+                game.draw_board()         
+            
             else:
                 print("Invalid move")
 
-        make_animation(board.moves, board_sizes[board_number], data, "test")
-        #board.save_log()
+
+        if game.won():
+            print("Game was won")
+
+        game.save_log()
         print("Game ended")
 
     # ------------------------------------------------------------------------
     else:
-        print("Invalid algorithm input. Choose: random, optimalisation, or depth_first")
+        print("Invalid algorithm input. Choose: random, optimalisation, depth_first, or play")
         sys.exit(0)
