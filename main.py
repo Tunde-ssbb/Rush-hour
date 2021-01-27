@@ -1,5 +1,4 @@
 from code.classes.board import Board
-from code.classes.car import Car
 from code.util import make_animation, save_log, bar_plot_of_solutions
 from code.algorithms.random import random_main
 from code.algorithms.depth_first import depth_first_main
@@ -9,7 +8,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 import ast
-
 
 
 if __name__ == "__main__":
@@ -63,6 +61,7 @@ if __name__ == "__main__":
         log = True if input("Log solutions (y/n):").capitalize() == "Y" else False
         plot = True if input("Plot solutions y/n:").capitalize() == "Y" else False
         
+        # max moves per board retrieved from baseline results random algorithm
         max_moves_board = { "1": 287, "2": 167, "3": 2680,
                             "4": 2889, "5": 4441, "6": 1691, "7": 6000}
         max_moves = max_moves_board[board_number]
